@@ -131,6 +131,9 @@ jobs:
           ./gradlew clean assembleRelease \
             -PversionName="$VERSION_NAME" \
             -PversionCode="$VERSION_CODE"
+          # Varlik adini surum iceren anlasilir bir isme cevir
+          mv app/build/outputs/apk/release/app-release.apk \
+             "AltinAramaHarita-${VERSION_NAME}.apk"
           ls -lh app/build/outputs/apk/release/
 
       - name: Sürümü yayınla
@@ -150,6 +153,6 @@ jobs:
             ---
             Harita verileri: © OpenStreetMap katılımcıları, OpenTopoMap (CC-BY-SA)
           files: |
-            app/build/outputs/apk/release/app-release.apk
+            AltinAramaHarita-*.apk
             app/src/main/assets/offline/afyon.mbtiles
           fail_on_unmatched_files: false
