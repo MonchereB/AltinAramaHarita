@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <!-- Harita Görünümü (OSMDroid) -->
+    <org.osmdroid.views.MapView
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Kontrol Düğmeleri -->
+    <Button
+        android:id="@+id/btnUpdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_update"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="@color/colorAccent"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="10dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintTop_toBottomOf="@id/btnCenterMyLocation"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:elevation="6dp"/>
+
+    <Button
+        android:id="@+id/btnCenterMyLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_center"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="@color/colorPrimary"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="10dp"
+        android:layout_margin="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:elevation="6dp"/>
+
+    <!-- Atif (OpenStreetMap / OpenTopoMap - CC-BY-SA) -->
+    <TextView
+        android:id="@+id/tvAttribution"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/attribution"
+        android:textSize="10sp"
+        android:textColor="#333333"
+        android:background="#D9FFFFFF"
+        android:paddingHorizontal="6dp"
+        android:paddingVertical="3dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="6dp"
+        app:layout_constraintBottom_toTopOf="@id/btnLegalNotice"
+        app:layout_constraintStart_toStartOf="parent"
+        android:elevation="4dp"/>
+
+    <Button
+        android:id="@+id/btnLegalNotice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Yasal Uyarı"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#8B6914"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="10dp"
+        android:layout_margin="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:elevation="6dp"/>
+
+    <!-- Katman bilgisi -->
+    <TextView
+        android:id="@+id/tvLayerInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/layer_gold"
+        android:textColor="@color/text_primary"
+        android:textSize="14sp"
+        android:background="@android:color/white"
+        android:padding="8dp"
+        android:elevation="4dp"
+        android:layout_margin="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

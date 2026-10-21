@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">Altın Arama Harita</string>
+    <string name="title_map">Altın Savakçılığı Haritası - Afyonkarahisar</string>
+    <string name="btn_center">Konumuma Merkeze Al</string>
+    <string name="btn_refresh">Veriyi Yenile</string>
+    <string name="msg_loading">Harita ve veriler yükleniyor…</string>
+    <string name="msg_permission_denied">Konum ve depolama izinleri reddedildi. Harita sınırlı çalışacaktır.</string>
+    <string name="dialog_open_maps">Google Haritalarda Aç (Rota Oluştur)</string>
+    <string name="dialog_center_map">Bu Noktayı Harita Merkezine Al</string>
+    <string name="dialog_close">Kapat</string>
+    <string name="label_coords">Koordinatlar</string>
+    <string name="label_elevation">Yaklaşık İrtifa</string>
+    <string name="label_terrain">Arazi Özelliği</string>
+    <string name="label_distance">Afyon Merkezden Mesafe</string>
+    <string name="label_description">Açıklama / Kaynak</string>
+    <string name="label_unknown">Bilinmiyor</string>
+    <string name="offline_note">Çevrimdışı harita için Afyonkarahisar bölgesi MBTiles dosyasını assets/ harita_dosyalari/ klasörüne ekleyin ve MapHelper.kt dosyasından etkinleştirin.</string>
+    <string name="legal_title">Önemli Yasal Uyarı</string>
+    <string name="legal_text">Türkiye\'de derelerde amatör/hobi amaçlı altın arama (savakçılığı) 3213 sayılı Maden Kanunu kapsamında serbest DEĞİLDİR. Maden kaynakları devlete aittir ve araştırma/çıkarma için resmi ruhsat gerekmektedir. İznsiz faaliyette bulunmak cezai sorumluluk doğurabilir. \n\nBu uygulama SİGİLA BİLGİ YERİNDE DEĞİLDİR. Gösterilen noktalar ve kısıtlı alanlar yaklaşık/referansdır; kesin sınırlar ve maden statüsü için mutlaka şu kurumlardan yazılı onay alınız: Maden Tetkik ve Arama Genel Müdürlüğü (MTA), Afyonkarahisar Valiliği / İl Müdürlüğü ve Orman ve Su İşleri Bakanlığı. \n\nUygulama geliştiricisi, verilerin doğruluğundan ve kullanım sonucu doğacak her türlü yasal/cezai sorumluluğu kabul etmez.</string>
+    <string name="legal_accept">Anladım, Onaylıyorum</string>
+    <string name="layer_gold">Altın Potansiyeli Noktaları</string>
+    <string name="layer_restricted">Yasaklı / Kısıtlı Alanlar</string>
+    <string name="toast_no_gps">Konum (GPS) alınamadı. Harita Afyonkarahisar merkezi üzerinde açıldı.</string>
+    <string name="attribution">© OpenStreetMap katılımcıları · OpenTopoMap (CC-BY-SA)</string>
+    <string name="attribution_online">© OpenStreetMap katılımcıları (CC-BY-SA)</string>
+    <string name="btn_update">Güncelle</string>
+    <string name="update_checking">Güncelleme kontrol ediliyor…</string>
+    <string name="update_up_to_date">Uygulama güncel (sürüm %1$d)</string>
+    <string name="update_available_title">Yeni Sürüm Mevcut</string>
+    <string name="update_available_msg">Kurulu sürüm: %1$d\nYeni sürüm: %2$d (%3$s)\n\n%4$s</string>
+    <string name="update_download_btn">Güncelle</string>
+    <string name="update_later_btn">Şimdi Değil</string>
+    <string name="update_downloading">Güncelleme indiriliyor… %1$d%%</string>
+    <string name="update_download_failed">İndirme başarısız: %1$s</string>
+    <string name="update_install_failed">Kurulum başlatılamadı</string>
+    <string name="update_check_failed">Güncelleme kontrol edilemedi: %1$s</string>
+</resources>

@@ -1,0 +1,17 @@
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.2.0'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.22'
+    }
+}
+
+// Depolar settings.gradle icinde tanimlidir (RepositoriesMode.FAIL_ON_PROJECT_REPOS).
+// Burada allprojects { repositories { ... } } kullanilmamalidir.
+
+tasks.register('clean', Delete) {
+    delete rootProject.layout.buildDirectory
+}

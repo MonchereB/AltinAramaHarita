@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Altın kovalama kabı (savak) -->
+    <path
+        android:fillColor="#FFC107"
+        android:pathData="M26,54 L82,54 C82,70 70,79 54,79 C38,79 26,70 26,54 Z" />
+
+    <!-- Kabın kenarı -->
+    <path
+        android:fillColor="#FFB300"
+        android:pathData="M24,50 L84,50 L84,56 L24,56 Z" />
+
+    <!-- Sap -->
+    <path
+        android:fillColor="#8D6E00"
+        android:pathData="M76,54 L93,37 L99,43 L82,60 Z" />
+
+    <!-- Altın tanesi -->
+    <path
+        android:fillColor="#FFF59D"
+        android:pathData="M42,44 L50,35 L60,38 L64,48 L56,54 L45,51 Z" />
+
+    <!-- Su / alüvyal dalgasi -->
+    <path
+        android:fillColor="#4FC3F7"
+        android:pathData="M32,62 C38,57 44,66 50,61 C56,56 62,66 68,61 C72,58 76,60 78,62 L78,66 C74,64 70,63 68,65 C62,70 56,60 50,65 C44,70 38,61 32,66 Z" />
+
+</vector>

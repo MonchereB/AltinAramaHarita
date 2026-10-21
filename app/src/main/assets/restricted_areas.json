@@ -1,0 +1,29 @@
+[
+  {
+    "id": 101,
+    "name": "Başkomutan Tarihi Milli Parkı",
+    "lat": 38.6000,
+    "lon": 30.3500,
+    "radius_m": 45000,
+    "type": "Milli Park (Maden/Kamp Sınırlı)",
+    "description": "Afyonkarahisar, Kütahya ve Uşak il sınırları arasında yer alan, 1981 yılında ilan edilen tarihî milli park. Alan içinde maden araştırma ve kamp yapımı kısıtlanabilir. Kesin sınır için Orman ve Su İşleri Bakanlığı'na başvurunuz."
+  },
+  {
+    "id": 102,
+    "name": "Akdağ Milli Parkı",
+    "lat": 38.2500,
+    "lon": 29.7000,
+    "radius_m": 25000,
+    "type": "Milli Park (Tam Korumalı)",
+    "description": "Afyonkarahisar'ın Sandıklı ilçesi ile Denizli'nin Çivril ilçesi sınırları içinde, 2024 yılında 49. milli park olarak ilan edilen ~14.692 hektarlık al. Maden faaliyetleri ve kamp kısıtlıdır."
+  },
+  {
+    "id": 103,
+    "name": "Askeri / Güvenlik Bölgesi (Referans)",
+    "lat": 38.7569,
+    "lon": 30.5387,
+    "radius_m": 3000,
+    "type": "Askeri / Özel Bölge",
+    "description": "Örnek bir askeri/güvenlik bölgesi referans noktasıdır. Gerçek askeri askeri sınırlar Harita Genel Müdürlüğü (MSB) ve ilgili kurumlardan öğrenilmelidir. Bu nokta gerçeği yansıtmayabilir."
+  }
+]

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#B8860B</color>
+    <color name="colorPrimaryDark">#8B6914</color>
+    <color name="colorAccent">#FFD700</color>
+    <color name="map_gold_pin">#FFD700</color>
+    <color name="restricted_fill">#7FB069</color>
+    <color name="restricted_stroke">#2E7D32</color>
+    <color name="surface_bg">#F5F5F5</color>
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#757575</color>
+    <color name="overlay_bg">#EEFFFFFF</color>
+    <color name="ic_launcher_background">#FFF3D6</color>
+</resources>

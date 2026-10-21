@@ -1,0 +1,103 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+}
+
+// ---------------------------------------------------------------------------
+// Release imzalama
+// Otomatik guncelleme icin her derlemenin AYNI anahtarla imzalanmasi gerekir.
+//  - Yerel:  keystore.properties dosyasini kullanir
+//  - CI:     KEYSTORE_BASE64 / KEYSTORE_PASSWORD / KEY_ALIAS / KEY_PASSWORD
+//            ortam degiskenlerini kullanir (GitHub Secrets)
+// ---------------------------------------------------------------------------
+ext.ksProps = new Properties()
+ext.ksPropsFile = rootProject.file("keystore.properties")
+ext.hasKsFile = ext.ksPropsFile.exists()
+if (ext.hasKsFile) {
+    ext.ksProps.load(new FileInputStream(ext.ksPropsFile))
+}
+
+// Imzalama anahtarinin cozumlenmesi (script seviyesinde hesaplanir)
+ext.releaseStoreFile = null
+if (System.getenv("KEYSTORE_BASE64")) {
+    // CI: base64 icerikten gecici dosya olustur
+    def tmp = new File(System.getProperty("java.io.tmpdir"), "release.keystore")
+    tmp.bytes = Base64.decode(System.getenv("KEYSTORE_BASE64"))
+    ext.releaseStoreFile = tmp
+} else if (ext.hasKsFile && ext.ksProps.containsKey("storeFile")) {
+    def f = rootProject.file(ext.ksProps["storeFile"])
+    if (f.exists()) {
+        ext.releaseStoreFile = f
+    }
+}
+ext.releaseSigningReady = (ext.releaseStoreFile != null)
+
+android {
+    namespace 'com.altinarama.harita'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.altinarama.harita"
+        minSdk 24
+        targetSdk 34
+        // CI sürüm bilgisini -PversionCode / -PversionName ile geçer
+        versionCode (project.hasProperty("versionCode") ? project.property("versionCode").toString().toInteger() : 1)
+        versionName (project.hasProperty("versionName") ? project.property("versionName").toString() : "1.0.0")
+    }
+
+    signingConfigs {
+        release {
+            def store = project.ext.releaseStoreFile
+            if (store != null) {
+                storeFile store
+                storePassword (System.getenv("KEYSTORE_PASSWORD")
+                        ?: project.ext.ksProps.getProperty("storePassword"))
+                keyAlias (System.getenv("KEY_ALIAS")
+                        ?: project.ext.ksProps.getProperty("keyAlias"))
+                keyPassword (System.getenv("KEY_PASSWORD")
+                        ?: project.ext.ksProps.getProperty("keyPassword"))
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            if (project.ext.releaseSigningReady) {
+                signingConfig signingConfigs.release
+            }
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+
+    packaging {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.9.22"
+    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.11.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    // Offline/online harita için OSMDroid (OpenStreetMap) - ücretsiz, offline MBTiles desteği var
+    implementation 'org.osmdroid:osmdroid-android:6.1.1'
+    // JSON işleme
+    implementation 'com.google.code.gson:gson:2.10.1'
+}

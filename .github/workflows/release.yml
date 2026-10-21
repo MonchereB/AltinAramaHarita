@@ -1,0 +1,130 @@
+name: Sürüm Yayınla
+
+# Etiket (tag) push edildiğinde veya elle tetiklendiğinde çalışır.
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Sürüm etiketi (örn. v1.0.0)'
+        required: true
+        default: 'v1.0.0'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: APK derle ve yayınla
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Kodu al
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Java 17 kur
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Android SDK kur
+        uses: android-actions/setup-android@v3
+
+      - name: SDK bileşenlerini indir
+        run: |
+          sdkmanager --licenses <<< "y" || true
+          sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
+
+      - name: Python kur
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Gradle ile build et
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Offline haritayı hazırla
+        shell: bash
+        run: |
+          set -e
+          mkdir -p app/src/main/assets/offline
+          # 1) Onceki surumde yayinlanmis MBTiles'i indir (hizli, sunucuya yuk bindirmez)
+          PREV=$(git tag --sort=-v:refname | grep -v "^${GITHUB_REF_NAME}$" | head -1 || true)
+          if [ -n "$PREV" ]; then
+            echo "Onceki surum: $PREV"
+            gh release download "$PREV" --pattern "afyon.mbtiles" \
+              --dir app/src/main/assets/offline || true
+          fi
+          if [ ! -f app/src/main/assets/offline/afyon.mbtiles ]; then
+            echo "Harita sifirdan uretiliyor (bir surebilir)..."
+            python tools/build_mbtiles.py
+          fi
+          ls -lh app/src/main/assets/offline/afyon.mbtiles
+
+      - name: Sürüm bilgisini hesapla
+        shell: bash
+        run: |
+          TAG="${{ github.event.inputs.tag || github.ref_name }}"
+          VERSION="${TAG#v}"
+          MAJOR=$(echo "$VERSION" | cut -d. -f1)
+          MINOR=$(echo "$VERSION" | cut -d. -f2)
+          PATCH=$(echo "$VERSION" | cut -d. -f3)
+          PATCH=${PATCH:-0}
+          CODE=$((MAJOR * 100 + MINOR * 10 + PATCH))
+          echo "VERSION_NAME=$VERSION" >> "$GITHUB_ENV"
+          echo "VERSION_CODE=$CODE" >> "$GITHUB_ENV"
+          echo "Sürüm $VERSION (versionCode $CODE)"
+
+      - name: Release imzalama anahtarını hazırla
+        shell: bash
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          if [ -z "$KEYSTORE_BASE64" ]; then
+            echo "::error::Secrets tanimli degil. KEYSTORE_BASE64, KEYSTORE_PASSWORD, KEY_ALIAS, KEY_PASSWORD ayarlanmali."
+            exit 1
+          fi
+          echo "$KEYSTORE_BASE64" | base64 -d > release.keystore
+          {
+            echo "storeFile=release.keystore"
+            echo "storePassword=$KEYSTORE_PASSWORD"
+            echo "keyAlias=$KEY_ALIAS"
+            echo "keyPassword=$KEY_PASSWORD"
+          } > keystore.properties
+          echo "Keystore hazir."
+
+      - name: APK derle
+        run: |
+          ./gradlew clean assembleRelease \
+            -PversionName="$VERSION_NAME" \
+            -PversionCode="$VERSION_CODE"
+          ls -lh app/build/outputs/apk/release/
+
+      - name: Sürümü yayınla
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.inputs.tag || github.ref_name }}
+          name: ${{ github.event.inputs.tag || github.ref_name }}
+          body: |
+            ## Altın Arama Harita ${{ github.event.inputs.tag || github.ref_name }}
+
+            Otomatik derleme. Bu APK, GitHub Actions tarafından üretilmiştir.
+
+            **Kurulum:** Bu sayfadaki `AltinAramaHarita.apk` dosyasını indirip telefonda açın.
+            İlk kurulumdan sonra, uygulama içindeki **Güncelle** butonu ile yeni sürümleri
+            otomatik olarak alabilirsiniz.
+
+            ---
+            Harita verileri: © OpenStreetMap katılımcıları, OpenTopoMap (CC-BY-SA)
+          files: |
+            app/build/outputs/apk/release/app-release.apk
+            app/src/main/assets/offline/afyon.mbtiles
+          fail_on_unmatched_files: false

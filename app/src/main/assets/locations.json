@@ -1,0 +1,75 @@
+[
+  {
+    "id": 1,
+    "name": "Afyonkarahisar Merkez - Akarçay Kıyısı",
+    "lat": 38.7569,
+    "lon": 30.5387,
+    "elevation_m": "~1020",
+    "terrain": "Alüvyal dere yatağı / akarsu kıyısı",
+    "distance_km": 0.0,
+    "description": "İl merkezi referans noktası. Akarçay ve yakın çevredeki alüvyal (uma) sedimentleri. Jeolojik olarak maden arama için ön değerlendirme gerektirir. (Yaklaşık koordinat - doğrulama gerekli)"
+  },
+  {
+    "name": "Emirdağ - Daydalı Bölgesi (Altınlı Demir Yatağı Yakını)",
+    "lat": 39.0335,
+    "lon": 31.3375,
+    "elevation_m": "~1100",
+    "terrain": "Metamorfik kayaç / dere yatağı",
+    "distance_km": 60.0,
+    "description": "Afyon'dan yaklaşık kuzeydoğu. Jeoloji Mühendisleri Odası sunumunda 'altınlı demir yatağı' olarak belirtilen bölge. Afyon-Ankara karayoru civarı. (Yaklaşık koordinat)"
+  },
+  {
+    "name": "Sandıklı Dere Yatakları",
+    "lat": 38.3526,
+    "lon": 30.2481,
+    "elevation_m": "~870",
+    "terrain": "Alüvyal dere yatağı / SAĞANAK alanı",
+    "distance_km": 50.0,
+    "description": "Sandıklı ilçesindeki dere yatakları. Yerel yayınlarda sağanak sonrası dere yatındaki çöküntüler için dikkat çekilmiştir. Akdağ Milli Parkı yakınıdır (kısıtlı alanı kontrol edin)."
+  },
+  {
+    "name": "Bolvadin Dere Yatakları",
+    "lat": 38.7167,
+    "lon": 31.0500,
+    "elevation_m": "~1050",
+    "terrain": "Alüvyal ova ve dere yatağı",
+    "distance_km": 42.0,
+    "description": "Bolvadin ilçesi ve çevresindeki akarsu/dere yatakları. Afyonkarahisar İlindeki İdari Yerleşmelerin Toponimik çalışmasında Derekalanı ve benzeri dere adları kayıtlıdır."
+  },
+  {
+    "name": "İscehisar Akarsu Kıyıları",
+    "lat": 38.9028,
+    "lon": 30.7222,
+    "elevation_m": "~1050",
+    "terrain": "Mermer ovası ve akarsu kenarı",
+    "distance_km": 18.0,
+    "description": "İscehisar ilçesi, mermer rezervleri ile bilinen bölge; akarsu kıyılarındaki alüvyal sedimentler referans noktasıdır."
+  },
+  {
+    "name": "Sinanpaşa Dere Yatakları",
+    "lat": 38.8236,
+    "lon": 30.3931,
+    "elevation_m": "~980",
+    "terrain": "Dere yatağı / alüvyal sediment",
+    "distance_km": 26.0,
+    "description": "Sinanpaşa ilçesindeki dere yatakları. Afyonkarahisar çevresindeki potansiyel alüvyal altın araştırma adayları arasında yer almaktadır."
+  },
+  {
+    "name": "Hocalar Akarsu Bölgesi",
+    "lat": 38.5400,
+    "lon": 30.5100,
+    "elevation_m": "~950",
+    "terrain": "Akarsu / dere yatağı",
+    "distance_km": 33.0,
+    "description": "Hocalar ilçesindeki akarsu yatakları. Referans noktası olarak eklenmiştir; maden statüsü MTA'dan teyit edilmelidir."
+  },
+  {
+    "name": "Dinar Dere Yatakları",
+    "lat": 38.0800,
+    "lon": 30.1400,
+    "elevation_m": "~900",
+    "terrain": "Dere yatağı / alüvyal sediment",
+    "distance_km": 72.0,
+    "description": "Dinar ilçesindeki dere yatakları. Güney Afyonkarahisar referans noktası."
+  }
+]

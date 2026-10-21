@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Guncellestirme icin indirilen APK'nin paylasilacagi dizinler -->
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Uygulamaya ozel harici depolama (izin gerekmez) -->
+    <external-files-path
+        name="external_files"
+        path="." />
+    <!-- Gecici onbellek -->
+    <cache-path
+        name="cache"
+        path="." />
+    <!-- Dahili depolama -->
+    <files-path
+        name="internal_files"
+        path="." />
+</paths>

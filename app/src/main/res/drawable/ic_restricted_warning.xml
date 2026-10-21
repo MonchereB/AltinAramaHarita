@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Kısıtlı alan / yasak bölge uyarı ikonu -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="36dp"
+    android:height="36dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <path
+        android:fillColor="#2E7D32"
+        android:pathData="M12,2 L22,20 L2,20 Z" />
+
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M11,8 h2 v6 h-2 Z" />
+
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M11,15.5 h2 v2 h-2 Z" />
+
+</vector>
