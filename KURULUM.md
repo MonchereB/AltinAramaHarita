@@ -196,6 +196,9 @@ adb logcat | findstr OsmDroid
 # Debug APK üret
 ./gradlew assembleDebug
 
+# İmzalı Release APK üret
+./gradlew assembleRelease
+
 # APK'yı telefona yükle
 adb install -r app/build/outputs/apk/debug/app-debug.apk
 
@@ -204,4 +207,64 @@ adb install -r app/build/outputs/apk/debug/app-debug.apk
 
 # Android Studio'dan logları izle
 adb logcat | findstr "altinarama"
+```
+
+---
+
+## 8. GitHub Yayın ve Otomatik Güncelleme
+
+### Depo
+👉 **https://github.com/MonchereB/AltinAramaHarita**
+
+Kaynak kod depoda; **81 MB'lık offline harita ve imzalama anahtarı depoya girmez**
+(`.gitignore` ile dışlandı). CI bunları kendisi hazırlar.
+
+### Yeni sürüm yayınlama
+```bash
+git tag v1.1.0
+git push origin v1.1.0
+```
+GitHub Actions otomatik olarak:
+1. Önceki sürümdeki `afyon.mbtiles`'ı indirir (yoksa `tools/build_mbtiles.py` ile üretir)
+2. İmzalı Release APK'sını derler
+3. Releases sayfasına `AltinAramaHarita.apk` olarak yükler
+
+### GitHub Secrets (ilk kurulumda bir kez)
+**Repo → Settings → Secrets and variables → Actions → New repository secret**
+
+| Secret | Değer |
+|---|---|
+| `KEYSTORE_BASE64` | `altinarama.keystore` dosyasının base64 içeriği |
+| `KEYSTORE_PASSWORD` | `altinarama` |
+| `KEY_ALIAS` | `altinarama` |
+| `KEY_PASSWORD` | `altinarama` |
+
+Base64 içeriğini üretmek:
+```bash
+certutil -encode altinarama.keystore keystore_b64.txt
+# certutil "BEGIN CERTIFICATE" ekler; onu silip geri kalanı kullanın
+```
+
+### Telefonda güncelleme
+Uygulama açılışta GitHub'ı kontrol eder. Yeni sürüm varsa **Güncelle** butonu
+(varsayılan olarak açılışta kontrol edilir) ile APK indirilir ve Android'un kendi
+kurulum onay penceresi gösterilir.
+
+> **Önemli:** Güncellemenin çalışması için **kurulu APK ile yeni APK aynı imza
+> anahtarıyla** imzalanmalıdır. Bu yüzden telefona **Release** APK'sı kurulmalıdır
+> (debug APK'sı Release APK'sını güncelleyemez).
+
+### İlk kurulum (bu depoyu klonlayanlar için)
+```bash
+git clone https://github.com/MonchereB/AltinAramaHarita.git
+cd AltinAramaHarita
+# Kendi imza anahtarınız olmadan derlemek isterseniz:
+# keystore.properties dosyasini olusturun veya silin (unsigned olur)
+```
+
+### Depo bilgilerini değiştirmek
+`app/src/main/java/com/altinarama/harita/UpdateChecker.kt` içinde:
+```kotlin
+const val GITHUB_OWNER = "MonchereB"
+const val GITHUB_REPO = "AltinAramaHarita"
 ```

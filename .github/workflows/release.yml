@@ -53,16 +53,28 @@ jobs:
         run: |
           set -e
           mkdir -p app/src/main/assets/offline
-          # 1) Onceki surumde yayinlanmis MBTiles'i indir (hizli, sunucuya yuk bindirmez)
+          FOUND=0
+          # 1) Onceki surumden hazir MBTiles'i indir (hizli, karo sunucusuna yuk bindirmez)
           PREV=$(git tag --sort=-v:refname | grep -v "^${GITHUB_REF_NAME}$" | head -1 || true)
           if [ -n "$PREV" ]; then
-            echo "Onceki surum: $PREV"
+            echo "Onceki surumden deneniyor: $PREV"
             gh release download "$PREV" --pattern "afyon.mbtiles" \
               --dir app/src/main/assets/offline || true
+            [ -f app/src/main/assets/offline/afyon.mbtiles ] && FOUND=1
           fi
-          if [ ! -f app/src/main/assets/offline/afyon.mbtiles ]; then
-            echo "Harita sifirdan uretiliyor (bir surebilir)..."
+          # 2) Yoksa en son surumden dene
+          if [ "$FOUND" -eq 0 ]; then
+            echo "En son surumden deneniyor..."
+            gh release download --pattern "afyon.mbtiles" \
+              --dir app/src/main/assets/offline || true
+            [ -f app/src/main/assets/offline/afyon.mbtiles ] && FOUND=1
+          fi
+          # 3) Hicbiri yoksa sifirdan uret
+          if [ "$FOUND" -eq 0 ]; then
+            echo "Harita sifirdan uretiliyor (10-30 dakika surebilir)..."
             python tools/build_mbtiles.py
+          else
+            echo "Harita hazir."
           fi
           ls -lh app/src/main/assets/offline/afyon.mbtiles
 
