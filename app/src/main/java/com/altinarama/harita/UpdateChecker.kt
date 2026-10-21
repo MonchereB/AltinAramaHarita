@@ -80,12 +80,15 @@ object UpdateChecker {
                 if (conn.responseCode == 200) {
                     val body = conn.inputStream.use { it.readBytes().toString(Charsets.UTF_8) }
                     result = parseRelease(context, JSONObject(body))
+                    Log.i(TAG, "Guncel surum bulundu: ${result?.tagName} (versionCode=${result?.versionCode})")
                 } else {
                     error = "GitHub yanıtı: ${conn.responseCode}"
+                    Log.w(TAG, "GitHub API hatasi: ${conn.responseCode}")
                 }
                 conn.disconnect()
             } catch (e: Exception) {
                 error = e.message ?: "Bağlantı hatası"
+                Log.w(TAG, "Guncelleme kontrolu basarisiz: ${e.message}")
             }
             android.os.Handler(android.os.Looper.getMainLooper()).post {
                 callback(result, error)
