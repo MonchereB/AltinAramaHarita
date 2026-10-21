@@ -41,7 +41,14 @@ class MapHelper(private val context: Context, private val mapView: MapView) {
                         context.getString(R.string.label_unknown)
                     ),
                     distanceKm = obj.optDouble(GoldLocation.KEY_DISTANCE, 0.0),
-                    description = obj.optString(GoldLocation.KEY_DESCRIPTION, "")
+                    description = obj.optString(GoldLocation.KEY_DESCRIPTION, ""),
+                    rank = obj.optInt(GoldLocation.KEY_RANK, 0),
+                    confidence = obj.optString(GoldLocation.KEY_CONFIDENCE, ""),
+                    category = obj.optString(GoldLocation.KEY_CATEGORY, ""),
+                    sourceDeposit = obj.optString(GoldLocation.KEY_SOURCE, ""),
+                    lithology = obj.optString(GoldLocation.KEY_LITHOLOGY, ""),
+                    indicators = obj.optString(GoldLocation.KEY_INDICATORS, ""),
+                    reasoning = obj.optString(GoldLocation.KEY_REASONING, "")
                 )
                 locations.add(loc)
                 addGoldMarker(loc, onLocationClick)
@@ -81,15 +88,23 @@ class MapHelper(private val context: Context, private val mapView: MapView) {
     private fun addGoldMarker(loc: GoldLocation, onLocationClick: (GoldLocation) -> Unit) {
         val marker = Marker(mapView)
         marker.position = GeoPoint(loc.lat, loc.lon)
-        marker.title = loc.name
+        marker.title = buildString {
+            if (loc.rank > 0) append("#").append(loc.rank).append("  ")
+            append(loc.name)
+        }
         marker.snippet = buildString {
+            if (loc.confidence.isNotBlank()) {
+                append(loc.confidence)
+                append(" • ")
+            }
             append(context.getString(R.string.label_elevation))
             append(": ")
             append(loc.elevationM)
-            append(" m | ")
-            append(context.getString(R.string.label_terrain))
-            append(": ")
-            append(loc.terrain)
+            append(" m")
+            if (loc.sourceDeposit.isNotBlank()) {
+                append(" | ")
+                append(loc.sourceDeposit)
+            }
         }
         marker.setIcon(ContextCompat.getDrawable(context, R.drawable.ic_gold_pin))
         marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)

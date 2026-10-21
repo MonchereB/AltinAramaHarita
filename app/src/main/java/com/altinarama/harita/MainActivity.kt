@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -286,16 +287,36 @@ class MainActivity : AppCompatActivity() {
         val view = layoutInflater.inflate(R.layout.dialog_location_info, null)
 
         val tvTitle = view.findViewById<TextView>(R.id.dialog_title)
+        val tvConf = view.findViewById<TextView>(R.id.dialog_confidence)
         val tvCoords = view.findViewById<TextView>(R.id.dialog_coords)
         val tvElev = view.findViewById<TextView>(R.id.dialog_elevation)
         val tvTerrain = view.findViewById<TextView>(R.id.dialog_terrain)
         val tvDist = view.findViewById<TextView>(R.id.dialog_distance)
+        val tvSource = view.findViewById<TextView>(R.id.dialog_source)
+        val tvLith = view.findViewById<TextView>(R.id.dialog_lithology)
+        val tvInd = view.findViewById<TextView>(R.id.dialog_indicators)
+        val tvReason = view.findViewById<TextView>(R.id.dialog_reasoning)
         val tvDesc = view.findViewById<TextView>(R.id.dialog_description)
         val btnOpen = view.findViewById<Button>(R.id.dialog_btn_open_maps)
         val btnCenter = view.findViewById<Button>(R.id.dialog_btn_center)
         val btnClose = view.findViewById<Button>(R.id.dialog_btn_close)
 
         tvTitle.text = loc.name
+
+        // Kanıt g��veni rozeti
+        tvConf.text = buildString {
+            if (loc.rank > 0) append("#").append(loc.rank).append("  ")
+            append(loc.confidence.ifBlank { loc.category })
+        }
+        tvConf.setBackgroundColor(
+            when {
+                loc.confidence.contains("ÇOK") -> android.graphics.Color.parseColor("#B71C1C")
+                loc.confidence.contains("YÜKSEK") -> android.graphics.Color.parseColor("#E65100")
+                loc.confidence.contains("ORTA") -> android.graphics.Color.parseColor("#F9A825")
+                else -> android.graphics.Color.parseColor("#757575")
+            }
+        )
+
         tvCoords.text = buildString {
             append(getString(R.string.label_coords))
             append(": ")
@@ -306,6 +327,15 @@ class MainActivity : AppCompatActivity() {
         tvElev.text = getString(R.string.label_elevation) + ": " + loc.elevationM + " m (yaklaşık)"
         tvTerrain.text = getString(R.string.label_terrain) + ": " + loc.terrain
         tvDist.text = getString(R.string.label_distance) + ": " + loc.distanceKm + " km"
+
+        tvSource.text = if (loc.sourceDeposit.isBlank()) "" else "Bilinir cevher: " + loc.sourceDeposit
+        tvSource.visibility = if (loc.sourceDeposit.isBlank()) View.GONE else View.VISIBLE
+        tvLith.text = if (loc.lithology.isBlank()) "" else "Litoloji: " + loc.lithology
+        tvLith.visibility = if (loc.lithology.isBlank()) View.GONE else View.VISIBLE
+        tvInd.text = if (loc.indicators.isBlank()) "" else "Aranacak göstergeler: " + loc.indicators
+        tvInd.visibility = if (loc.indicators.isBlank()) View.GONE else View.VISIBLE
+        tvReason.text = if (loc.reasoning.isBlank()) "" else "Jeolojik değerlendirme: " + loc.reasoning
+        tvReason.visibility = if (loc.reasoning.isBlank()) View.GONE else View.VISIBLE
         tvDesc.text = loc.description
 
         val dialog = AlertDialog.Builder(this)
@@ -319,7 +349,7 @@ class MainActivity : AppCompatActivity() {
         }
         btnCenter.setOnClickListener {
             mapView.controller.animateTo(GeoPoint(loc.lat, loc.lon))
-            mapView.controller.setZoom(15.0)
+            mapView.controller.setZoom(14.0)
             dialog.dismiss()
         }
         btnClose.setOnClickListener { dialog.dismiss() }
