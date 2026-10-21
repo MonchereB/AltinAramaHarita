@@ -56,6 +56,9 @@ jobs:
 
       - name: Offline haritayı hazırla
         shell: bash
+        env:
+          # gh release download icin gerekli
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -e
           mkdir -p app/src/main/assets/offline
