@@ -12,6 +12,10 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
 
+    <!-- Otomatik guncelleme: indirilen APK'yi sistem kurulum ekraninda acmak icin.
+         Kullanici "bilinmeyen kaynaklardan yukleme" iznini bir kez vermelidir. -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+
     <!-- Android 11+ paket gorunurlugu: tarayici ve harita uygulamalari icin -->
     <queries>
         <intent>

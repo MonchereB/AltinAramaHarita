@@ -110,8 +110,11 @@ object UpdateChecker {
         }
         if (apkUrl.isEmpty()) return null
 
-        // APK'nin icindeki gercek versionCode'u okuyalim
-        val remoteVersion = readVersionCodeFromUrl(context, apkUrl) ?: 0
+        // Surum kodunu once etiketten hesapla (hizli).
+        // Etiket okunamazsa APK'yi indirip icindeki versionCode'u okuruz (yavas).
+        val remoteVersion = versionCodeFromTag(tag)
+            ?: readVersionCodeFromUrl(context, apkUrl)
+            ?: 0
 
         return ReleaseInfo(
             tagName = tag,
@@ -121,6 +124,17 @@ object UpdateChecker {
             versionCode = remoteVersion,
             publishedAt = json.optString("published_at", "")
         )
+    }
+
+    /**
+     * Release etiketinden versionCode hesaplar.
+     * CI ile ayni formül: major*100 + minor*10 + patch
+     * (v1.2.3 -> 123)
+     */
+    private fun versionCodeFromTag(tag: String): Int? {
+        val m = Regex("""v?(\d+)\.(\d+)\.(\d+)""").find(tag) ?: return null
+        val (major, minor, patch) = m.destructured
+        return major.toInt() * 100 + minor.toInt() * 10 + patch.toInt()
     }
 
     /**
