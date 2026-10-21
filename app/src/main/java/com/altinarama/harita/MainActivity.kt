@@ -362,16 +362,26 @@ class MainActivity : AppCompatActivity() {
         val view = layoutInflater.inflate(R.layout.dialog_location_info, null)
 
         val tvTitle = view.findViewById<TextView>(R.id.dialog_title)
+        val tvConf = view.findViewById<TextView>(R.id.dialog_confidence)
         val tvCoords = view.findViewById<TextView>(R.id.dialog_coords)
         val tvElev = view.findViewById<TextView>(R.id.dialog_elevation)
         val tvTerrain = view.findViewById<TextView>(R.id.dialog_terrain)
         val tvDist = view.findViewById<TextView>(R.id.dialog_distance)
+        val tvSource = view.findViewById<TextView>(R.id.dialog_source)
+        val tvLith = view.findViewById<TextView>(R.id.dialog_lithology)
+        val tvInd = view.findViewById<TextView>(R.id.dialog_indicators)
+        val tvReason = view.findViewById<TextView>(R.id.dialog_reasoning)
         val tvDesc = view.findViewById<TextView>(R.id.dialog_description)
         val btnOpen = view.findViewById<Button>(R.id.dialog_btn_open_maps)
         val btnCenter = view.findViewById<Button>(R.id.dialog_btn_center)
         val btnClose = view.findViewById<Button>(R.id.dialog_btn_close)
 
         tvTitle.text = area.name
+        tvConf.visibility = View.GONE
+        tvSource.visibility = View.GONE
+        tvLith.visibility = View.GONE
+        tvInd.visibility = View.GONE
+        tvReason.visibility = View.GONE
         tvCoords.text = "Merkez: " +
             String.format("%.5f", area.lat) + ", " + String.format("%.5f", area.lon)
         tvElev.text = "Yarıçap: " + String.format("%.1f", area.radiusM / 1000.0) +

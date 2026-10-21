@@ -2,8 +2,8 @@
   {
     "id": 101,
     "name": "Başkomutan Tarihi Milli Parkı (Kocatepe Bölümü)",
-    "lat": 38.66000,
-    "lon": 30.51000,
+    "lat": 38.66,
+    "lon": 30.51,
     "radius_m": 12000,
     "type": "MİLLİ PARK (Kesin Yasak Alan)",
     "description": "Afyonkarahisar, Kütahya ve Uşak illeri sınırlarında, toplam 42.183 hektarlık alan (1981'de ilan edildi). Afyon Kocatepe bölümü, İzmir-Ankara ve İstanbul-Antalya devlet karayollarının kesiştiği noktada; Büyükkalecik kasabasının 8 km güneyi. Milli Park Kanunu gereği alanda maden arama/üretim, kamp kurma ve arazi bozma YASAKTIR. Büyük Taarruz ve Başkomutan Meydanı Savaşı'nın tarihi alanıdır; D-300 karayolu park içinden geçer. Sınırların kesin hali için Orman ve Su İşleri Bakanlığı Başkomutan Tarihi Milli Parkı Müdürlüğü'ne başvurun."
@@ -11,8 +11,8 @@
   {
     "id": 102,
     "name": "Akdağ Milli Parkı",
-    "lat": 38.34000,
-    "lon": 29.98000,
+    "lat": 38.34,
+    "lon": 29.98,
     "radius_m": 9500,
     "type": "MİLLİ PARK (Kesin Yasak Alan)",
     "description": "Denizli'nin Çivril ilçesi ile Afyonkarahisar'ın Sandıklı ilçesi sınırlarında, 14.692 hektarlık alan. 2000'de tabiat parkı, 2024'te Türkiye'nin 49. milli parkı olarak ilan edildi. Akdağ eteklerindeki Kocayayla bölümünü kapsar; bir kısmı Hocalar ve Kızılören ilçelerine taşar. Ortalama rakım 1.600 m. Alanda madencilik faaliyeti, kamp ve doğa bozucu her türlü faaliyet kesinlikle YASAKTIR. ⚠️ ÖNEMLİ: Altın arama için cazip görünen Sandıklı güneyi bu alanın hemen kuzeyinde; sınırları aşmamaya özen gösterin."
@@ -20,8 +20,8 @@
   {
     "id": 103,
     "name": "Ömer-Gecek Jeotermal Alanı",
-    "lat": 38.84500,
-    "lon": 30.47500,
+    "lat": 38.845,
+    "lon": 30.475,
     "radius_m": 3500,
     "type": "JEOTERMAL ALAN (Maden Ruhsatı YASAK)",
     "description": "Afyonkarahisar Merkez, Fethibey köyü civarında. Türkiye'nin en eski kaplıcalarından biri; 38-64 °C arası termal su çıkışları. AFAD verisine göre alan 'Gazlıgöl Fayı' üzerinde (Afyon kuzeyi, Fethibey-Ablak arası). Jeotermal alanlarda maden arama ruhsatı verilmez. YASAK: Maden/jeotermal işletme ruhsatlı alan."
@@ -30,7 +30,7 @@
     "id": 104,
     "name": "Gazlıgöl Jeotermal Alanı",
     "lat": 38.93193,
-    "lon": 30.50070,
+    "lon": 30.5007,
     "radius_m": 3000,
     "type": "JEOTERMAL ALAN (Maden Ruhsatı YASAK)",
     "description": "İhsaniye ilçesi sınırlarında, Gazlıgöl köyü çevresinde. 38-58 °C termal su. MTA 1974'te bu alanda sondaj çalışması yürütmüştür. Gazlıgöl Fayı (19 km, diri fay, Mw 6.55) üzerinde yer alır. Jeotermal alan statüsü nedeniyle maden ruhsatı verilmez."
@@ -38,8 +38,8 @@
   {
     "id": 105,
     "name": "Heybeli Jeotermal Alanı",
-    "lat": 38.72000,
-    "lon": 31.02000,
+    "lat": 38.72,
+    "lon": 31.02,
     "radius_m": 3000,
     "type": "JEOTERMAL ALAN (Maden Ruhsatı YASAK)",
     "description": "Bolvadin ilçesi sınırlarında, 46-71 °C termal su çıkışları. Afyon'un dört büyük jeotermal sahasından biri. Alan, Bolvadin Fayı ile bağlantılıdır. Maden ruhsatı verilmez."

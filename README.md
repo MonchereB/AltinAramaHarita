@@ -136,6 +136,66 @@ yasal/cezai sorumluluğu kabul etmez.
 
 ---
 
+## 🔬 Jeolojik Araştırma — Altın Nerede ve Neden Aranır?
+
+Uygulamadaki 18 nokta **yayınlanmış jeolojik kaynaklara** dayanarak sıralandı. Her pin;
+sıralaması, kanıt gücü, bilinen cevher, litoloji, arazide aranacak göstergeler ve
+"maden mühendisi gerekçesi" taşır.
+
+### 1. Alüvyal (plase) altın için aranan koşullar — önem sırasıyla
+
+| # | Koşul | Neden |
+|---|---|---|
+| 1 | **Birincil cevher kaynağı** | Altın kuvars damarlarında 3-10 mikron boyutunda; damarlar ayrışınca altın serbest kalır |
+| 2 | **Drenaj bağlantısı** | Altın yıkanmaz, **taşınır**; kaynaktan aşağı doğru dere boyunca taşınır |
+| 3 | **Fay / kırık zonu** | Hidrotermal akışkan kanalı + yeniden depolama yapısı (Afyon'da 31 diri fay) |
+| 4 | **Depo (trap) yapısı** | Dere kırılmaları, eğim değişimleri, boulder arkası, taban kaya çatlakları |
+| 5 | **Ağır mineral varlığı** | "Siyah kum" (magnetit/ilmenit) — manyetik test ile kolayca sınanır |
+| 6 | **Akış rejimi** | Düşük hız = daha iyi çökelme (DEÜ Prof. Dr. Deliormanlı) |
+
+### 2. Sıralama (yüksek → düşük olasılık)
+
+| # | Nokta | Kanıt | Güven |
+|---|---|---|---|
+| 1 | **Aşağısağırı Altınlı Demir Yatağı** | MTA 11.000 m karot sondaj; altın kuvarsta 3-10 mikron | ÇOK YÜKSEK |
+| 2 | **Doğlat Altınlı Antimuan Yatağı** | 2 km × 500 m E-W fay zonu, 2000 m sondaj | ÇOK YÜKSEK |
+| 3 | **Gazlıgöl Fayı / Ömer-Gecek** | 19 km diri fay + 4 jeotermal saha; ders kitabı altın bölgesi | YÜKSEK |
+| 4 | **Beyköy – Kıyır – Eynehankuzviran** | Antimon zuhurları + MTA "Beyköy" potansiyel altın sahası | YÜKSEK |
+| 5 | **Karacaören Sandıklı Porfiri** | MTA Cu-Mo-Au maden jeolojisi raporu (Sandıklı sınırları içinde) | YÜKSEK |
+| 6 | **Dodurga (Dokur)** | JMO altınlı antimuan yatağı + geniş kum yatakları | YÜKSEK |
+| 7 | **Bolvadin – Eber Gölü** | Bolvadin Fayı (16 km) + geniş alüvyal ova | ORTA-YÜKSEK |
+| 8 | **Şuhut – Balçıkhisar/İlyaslı/Kocatepe** | Pirit + markasit + silika sinter göstergeleri | ORTA-YÜKSEK |
+| 9-18 | Geçek, Mallıca, Sandıklı, Örenkaya, Sinanpaşa, Dinar, Çivril, Karaağaç, Yeşilyurt, Çakırözü | Fay zonları, jeomorfoloji, resmî potansiyel listeler | ORTA → DÜŞÜK |
+
+### 3. Kaynaklar
+
+- **JMO (Jeoloji Mühendisleri Odası) / ETKB — M. Orhan ÖZKOÇAK**
+  - *"Afyon-Bayat-Doğlat volkanik sahası altınlı antimuan yatağı"* (TJK 1992)
+  - *"Afyon-Aşağısağırı altınlı demir yatağı"* (MTA 11.000 m karot sondaj)
+  - *"Gold and Silver Exploration Viewpoint"* — **Mallıca–Doğlat–Geçek–Sandıklı fay zonu** "altın ve gümüş yataklarının oluşumunda ikinci önemli yapısal unsur"
+- **AFAD / MEB İRAP** — Afyonkarahisar'dan geçen **31 fayın** parametrik tablosu (Gazlıgöl 19 km, Geçek 10 km, Bolvadin 16 km, Sandıklı 11 km, Dinar 4 segment, Karakent 33 km…)
+- **MTA** — 27 resmi "potansiyel altın sahası" listesi (Beyköy, Karaağaç, Olucak…), Karacaören Sandıklı Porfiri raporu
+- **TEMA** — *Afyon ve Çevresinde Madencilik* (Sandıklı Büyük Ovası'nın %80'i ruhsatlı)
+- **Ankara Ticaret Odası (ATO) altın haritası** — Denizli/Çivril-Koçak yatağı
+- **Saha verisi (Yeni Şafak, 20.05.2026)** — Ege'de kırıntı madenciliği: **günde 0,3-1,5 gram**; bulunan altın **19-23 ayar** (doğal plase altını)
+- **DEÜ Maden Mühendisliği Bölüm Başkanı Prof. Dr. Ahmet Hamdi Deliormanlı** — "Ana yataklardan taşınmış altınlar, derelerin akışkan ortamını yitirdiği bölgelerde çökelir; büyük bir zenginlik bulmak mümkün değil."
+- Koordinatlar **Nominatim** ve **Overpass API** ile doğrulandı.
+
+### 4. Arazide pratik kontrol listesi
+
+1. **Siyah kum testi** — Manyetik taşınız varsa ve siyah kum tutuyorsa, altın ihtimali yüksek demektir (kanıt değil, ama gereklilik)
+2. **Kırık kuvars** — Limonitle dolmuş, breşik kuvars arayın (Aşağısağırı ve Doğlat'ın tipik göstergesi)
+3. **Pirit / markasit** — Altının en karakteristik gösterge mineralleri
+4. **Dere kırığı** — Ana dere kolundan sapmış, tabanı dikleşen yan dere kolları
+5. **Boulder arkası** — Akış hızı düşer, ağır mineral ve altın birikir
+6. **Taban kaya çatlakları** — Çatlak taban kayaya sıkışmış altın, panla zor çıkar ama vardır
+7. **Ayrışma zonu** — Cevherin üstündeki toprak kırmızı-sarı boyalıysa altın taşınıyor demektir
+
+> ⚠️ **Unutmayın:** Siyah kum **altın kanıtı değildir**, sadece olasılık artırıcıdır.
+> Ve Türkiye'de bu faaliyet için **resmi ruhsat** gereklidir (3213 sayılı Maden Kanunu).
+
+---
+
 ## 📄 Lisans
 
 Harita verileri: © OpenStreetMap katılımcıları, OpenTopoMap (CC-BY-SA)

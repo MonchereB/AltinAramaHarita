@@ -3,8 +3,8 @@
     "id": 1,
     "rank": 1,
     "name": "Aşağısağırı Altınlı Demir Yatağı",
-    "lat": 38.9000,
-    "lon": 30.7300,
+    "lat": 38.9,
+    "lon": 30.73,
     "elevation_m": "~1150",
     "terrain": "Metamorfik temel üzerinde talus yelpazesi ve dere yatağı",
     "distance_km": 24.0,
@@ -38,7 +38,7 @@
     "rank": 3,
     "name": "Gazlıgöl Fayı - Ömer Geçek / Gazlıgöl Jeotermal Alanı",
     "lat": 38.93193,
-    "lon": 30.50070,
+    "lon": 30.5007,
     "elevation_m": "~1050",
     "terrain": "Fay zonu boyunca açılmış vadi, kırık kireçtaşı-mermer",
     "distance_km": 20.0,
@@ -64,7 +64,7 @@
     "source_deposit": "Kıyır, Eynehan ve Kuzviran antimon zuhurları (JMO)",
     "lithology": "Paleozoyik mikaşist-mermer karışımı, kırık ve altere",
     "indicators": "Antimonit izleri, arsenopirit, limonit, kuvars; MTA 'Beyköy' potansiyel altın sahası listesinde",
-    "reasoning": "JMO'nun Doğlat çevresinde tanımladığı 'Eynehan ve Kuzviran benzeri antimon zuhurları' - Wikipedia köy listesine göre bunlar İhsaniye'nin 'Eynehankuzviran' köyüdür. Antimon + altın birlikteliği Türkiye'de çok karakteristiktir (Doğlat, Emirli, Kızılcahamam örnekleri). ÖNEMLİ: MTA'nın 27 resmi 'potansiyel altın sahası' listesinde **Beyköy** (İhsaniye) yer alıyor. Kıyır deresi bu zuhurların hemen güneyinden geçiyor. Antimon yüklü sular toprakları kırmızı-sarıya boyar; bu renklenmeyi dere yatağında görmeniz, suyun altından antimon-arsen taşıdığının işaretidir.",
+    "reasoning": "JMO'nun Doğlat çevresinde tanımladığı 'Eynehan ve Kuzviran benzeri antimon zuhurları' - Wikipedia köy listesine göre bunlar İhsaniye'nin 'Eynehankuzviran' köyüdür. Antimon + altın birlikteliği Türkiye'de çok karakteristiktir (Doğlat, Emirli, Kızılcahamam örnekleri). ÖNEMLİ: MTA'nın 27 resmi 'potansiyel altın sahası' listesinde Beyköy (İhsaniye) yer alıyor. Kıyır deresi bu zuhurların hemen güneyinden geçiyor. Antimon yüklü sular toprakları kırmızı-sarıya boyar; bu renklenmeyi dere yatağında görmeniz, suyun altından antimon-arsen taşıdığının işaretidir.",
     "description": "İhsaniye ilçesi kuzeyi, Kıyır köyü çevresi. Antimon zuhurları + MTA potansiyel altın sahası (Beyköy)."
   },
   {
@@ -81,7 +81,7 @@
     "source_deposit": "Karacaören Sandıklı Porfiri (Cu-Mo-Au), MTA Maden Jeolojisi Raporu",
     "lithology": "Porfirik intrüzyon (I-tip) + kontak metamorfizması, skarn, kuvars damarları",
     "indicators": "Kuvars-kalsit-sulfür damarları, pirit-kalkopirit, oksitlenmiş demir bakır renkleri, manyetik siyah kum",
-    "reasoning": "MTA'nın 'Bakır-Molibden-Altın Cevherleşmesinin Umrek Standartlarına Uygun Maden Jeolojisi ve Kaynak Tahmin Raporu' **Sandıklı ilçesi sınırları içerisinde** olduğunu belirtiyor. Porfiri-intrüzyon kaynaklı Cu-Mo-Au sistemleri dünyada tipik altın taşıyıcılarıdır: cevher damarları intrüzyonun üst kısmında yoğunlaşır, erozyonla açığa çıkar ve komşu dere yataklarına saçılır. Kırmızı-sarı limonit + yeşil oksitlenme (malakit) renkleri ve manyetik siyah kum göstergeleri aranmalı. 2020'de SPGM, 'Afyon-Sandıklı bölgesinde etütler sonucu sondaj çalışması gerçekleştirilmiş' der.",
+    "reasoning": "MTA'nın 'Bakır-Molibden-Altın Cevherleşmesinin Umrek Standartlarına Uygun Maden Jeolojisi ve Kaynak Tahmin Raporu' Sandıklı ilçesi sınırları içerisinde olduğunu belirtiyor. Porfiri-intrüzyon kaynaklı Cu-Mo-Au sistemleri dünyada tipik altın taşıyıcılarıdır: cevher damarları intrüzyonun üst kısmında yoğunlaşır, erozyonla açığa çıkar ve komşu dere yataklarına saçılır. Kırmızı-sarı limonit + yeşil oksitlenme (malakit) renkleri ve manyetik siyah kum göstergeleri aranmalı. 2020'de SPGM, 'Afyon-Sandıklı bölgesinde etütler sonucu sondaj çalışması gerçekleştirilmiş' der.",
     "description": "Sandıklı ilçe merkezinin hemen kuzeyi. Resmî olarak belgelenmiş Cu-Mo-Au porfiri cevherleşmesi."
   },
   {
@@ -132,7 +132,7 @@
     "source_deposit": "Şuhut Balçıkhisar-İlyaslı-Kocatepe volkanik sahaları (JMO)",
     "lithology": "Neojen volkanikler (andezit, bazalt, tüf), alterasyon zonları",
     "indicators": "PİRİT ve MARKASİT (Fe-Cu sülfür) - altının klasik gösterge mineralleri; silika sinter; limonit",
-    "reasoning": "JMO: 'Şuhut'un Balçıkhisar ve İlyaslı Köyleri ile Kocatepe civarındaki volkanik sahalarda **pirit ve markasit içerikli mud-pool ve silika sinter** oluşumlarına rastlanmıştır.' Pirit ve markasit, ALTININ en karakteristik gösterge mineralleridir (altın, pirit içinde veya pirit-le birlikte kuvars damarlarında bulunur). 'Mud-pool' (çamur havuzu) = sıcak su kaynaklarının sığ, yatay drenaj alanı; epizermal cevherleşmenin tipik oluşum ortamı. 'Silika sinter' ise silika kaplı sıcak su çıkışıdır. Bu üç göstergenin bir arada bulunması, Kocatepe (=Kumalar Dağı) çevresinde epizermal altın sistemi olabileceğinin güçlü göstergesidir. Ayrıca ATO raporunda Kütahya'nın 'Kapıören-Aktepe Yatağı' komşu bölgede listelenmiştir.",
+    "reasoning": "JMO: 'Şuhut'un Balçıkhisar ve İlyaslı Köyleri ile Kocatepe civarındaki volkanik sahalarda pirit ve markasit içerikli mud-pool ve silika sinter oluşumlarına rastlanmıştır.' Pirit ve markasit, ALTININ en karakteristik gösterge mineralleridir (altın, pirit içinde veya pirit-le birlikte kuvars damarlarında bulunur). 'Mud-pool' (çamur havuzu) = sıcak su kaynaklarının sığ, yatay drenaj alanı; epizermal cevherleşmenin tipik oluşum ortamı. 'Silika sinter' ise silika kaplı sıcak su çıkışıdır. Bu üç göstergenin bir arada bulunması, Kocatepe (=Kumalar Dağı) çevresinde epizermal altın sistemi olabileceğinin güçlü göstergesidir. Ayrıca ATO raporunda Kütahya'nın 'Kapıören-Aktepe Yatağı' komşu bölgede listelenmiştir.",
     "description": "Şuhut ilçesi güneyi, Balçıkhisar-İlyaslı-Kocatepe (Kumalar Dağı) üçgeni. Pirit-markasit-silika sinter göstergeleri."
   },
   {
@@ -166,7 +166,7 @@
     "source_deposit": "Mallıca bakır zuhurları (JMO) + MTA 'Karaağaç' potansiyel altın sahası",
     "lithology": "Paleozoyik mikaşist-mermer, Neojen volkanik",
     "indicators": "Bakır oksit renkleri, limonit, kuvars, MTA potansiyel altın sahası (Karaağaç)",
-    "reasoning": "Mallıca-Doğlat-Geçek-Sandıklı fay zonunun EN BATI düğümü. JMO burada 'Mallıca bakır zuhurları'ndan söz ediyor. Ayrıca MTA'nın 27 resmi 'potansiyel altın sahası' listesinde **Karaağaç** (hem İscehisar hem Emirdağ'da köy olarak var) yer alıyor ve bunlar tam olarak bu altın kuşağının üzerinde. Strateji: Doğlat ve Mallıca birbirine 10 km mesafede; aralarındaki vadi boyunca yıkanacak altın taşınır. Geniş, yüksek enerjili olmayan vadi tabanları ve yamaç yelpazeleri uygun.",
+    "reasoning": "Mallıca-Doğlat-Geçek-Sandıklı fay zonunun EN BATI düğümü. JMO burada 'Mallıca bakır zuhurları'ndan söz ediyor. Ayrıca MTA'nın 27 resmi 'potansiyel altın sahası' listesinde Karaağaç (hem İscehisar hem Emirdağ'da köy olarak var) yer alıyor ve bunlar tam olarak bu altın kuşağının üzerinde. Strateji: Doğlat ve Mallıca birbirine 10 km mesafede; aralarındaki vadi boyunca yıkanacak altın taşınır. Geniş, yüksek enerjili olmayan vadi tabanları ve yamaç yelpazeleri uygun.",
     "description": "Bayat ilçesi, Mallıca köyü. Altın kuşağının batı ucu + MTA potansiyel altın sahası (Karaağaç)."
   },
   {
@@ -174,7 +174,7 @@
     "rank": 11,
     "name": "Sandıklı - Doğlat-Sandıklı Fay Zonu Ana Ekseni",
     "lat": 38.45847,
-    "lon": 30.26080,
+    "lon": 30.2608,
     "elevation_m": "~1000",
     "terrain": "Geniş alüvyal ova, düşük eğimli dere yatakları",
     "distance_km": 40.0,
@@ -183,7 +183,7 @@
     "source_deposit": "'Sandıklı sahaları altın oluşumuna elverişli' (JMO) + Sandıklı Fayı (AFAD, 11 km) + Karacaören Porfiri",
     "lithology": "Neojen volkanik, porfirik intrüzyon, kumlu-kilsel alüvyum",
     "indicators": "Siyah kum, zirkon-monazit-rutil, kireçtaşı ve mermer çakılı kırıntılı yataklar",
-    "reasoning": "JMO: 'Sandıklı sahaları altın oluşumuna elverişli' ve 'Doğlat-Sandıklı fay zonu üzerinde yer alan' ifadeleriyle iki kez vurguluyor. TEMA raporuna göre **Sandıklı Büyük Ovası'nın %80'den fazlası maden ruhsatlı** - yani bölge yoğun olarak jeolojik olarak çalışılmış. Akdağ Milli Parkı sınırına yakınlık nedeniyle BİR KISMIDA KESİNLİKLE YASAK ALAN - Akdağ Milli Parkı (2024'te ilan edildi) sınırlarını mutlaka kontrol edin. Ovalarda akış hızı çok düşüktür; Prof. Dr. Deliormanlı'nın vurguladığı gibi 'akışkan ortamını yitirdiği' noktalarda altın çöker.",
+    "reasoning": "JMO: 'Sandıklı sahaları altın oluşumuna elverişli' ve 'Doğlat-Sandıklı fay zonu üzerinde yer alan' ifadeleriyle iki kez vurguluyor. TEMA raporuna göre Sandıklı Büyük Ovası'nın %80'den fazlası maden ruhsatlı - yani bölge yoğun olarak jeolojik olarak çalışılmış. Akdağ Milli Parkı sınırına yakınlık nedeniyle BİR KISMIDA KESİNLİKLE YASAK ALAN - Akdağ Milli Parkı (2024'te ilan edildi) sınırlarını mutlaka kontrol edin. Ovalarda akış hızı çok düşüktür; Prof. Dr. Deliormanlı'nın vurguladığı gibi 'akışkan ortamını yitirdiği' noktalarda altın çöker.",
     "description": "Sandıklı ilçe merkezi ve Büyük Ovası. ⚠️ Akdağ Milli Parkı sınırına dikkat: milli parkta madencilik faaliyeti ve kamp YASAKTIR."
   },
   {
@@ -225,7 +225,7 @@
     "rank": 14,
     "name": "Dinar - Maymuntaş Fayı - Kızılören Vadisi",
     "lat": 38.06563,
-    "lon": 30.15620,
+    "lon": 30.1562,
     "elevation_m": "~900",
     "terrain": "Dinar ovası, killi ve kumlu alüvyal yataklar",
     "distance_km": 78.0,
@@ -242,7 +242,7 @@
     "rank": 15,
     "name": "Çivril - Koçak (Denizli) - ATO Altın Yatağı Listesi",
     "lat": 38.32207,
-    "lon": 29.77110,
+    "lon": 29.7711,
     "elevation_m": "~800",
     "terrain": "Çivril grabeni içi, kumlu-killi alüvyal yataklar",
     "distance_km": 55.0,
@@ -251,7 +251,7 @@
     "source_deposit": "Çivril-Koçak Köyü Yatağı (Ankara Ticaret Odası altın haritası raporu)",
     "lithology": "Mesozoyik kireçtaşı, kumlu alüvyum",
     "indicators": "Kireçtaşı çakılı yataklar, kum yataklarında ağır mineral",
-    "reasoning": "Ankara Ticaret Odası'nın Türkiye altın haritası raporunda **DENİZLİ: Çivril-Koçak Köyü** açıkça listelenmiştir. Bu, Sandıklı'nın hemen güneydoğusunda, Akdağ Milli Parkı'nın güneyinde kalır ve Akdağ'ın DİLİMİNİ (Sandıklı-Hüdai jeotermal alanı) besleyen su akışının başlangıç bölgesidir. Türkiye'de altın yatakları 'Ege, Doğu Karadeniz, İç Ege ve Doğu Anadolu'da yoğunlaşır' (MTA). Güven skoru düşük çünkü denizli il sınırındadır ve maden statüsü Denizli Valiliği tarafından ayrıca değerlendirilmelidir.",
+    "reasoning": "Ankara Ticaret Odası'nın Türkiye altın haritası raporunda DENİZLİ: Çivril-Koçak Köyü açıkça listelenmiştir. Bu, Sandıklı'nın hemen güneydoğusunda, Akdağ Milli Parkı'nın güneyinde kalır ve Akdağ'ın DİLİMİNİ (Sandıklı-Hüdai jeotermal alanı) besleyen su akışının başlangıç bölgesidir. Türkiye'de altın yatakları 'Ege, Doğu Karadeniz, İç Ege ve Doğu Anadolu'da yoğunlaşır' (MTA). Güven skoru düşük çünkü denizli il sınırındadır ve maden statüsü Denizli Valiliği tarafından ayrıca değerlendirilmelidir.",
     "description": "Denizli ili Çivril ilçesi, Koçak köyü. Resmî ATO altın yatak listesinde yer alır (Afyon sınırında)."
   },
   {
@@ -259,7 +259,7 @@
     "rank": 16,
     "name": "Karaağaç (İscehisar) - MTA Potansiyel Altın Sahası",
     "lat": 38.88941,
-    "lon": 30.73200,
+    "lon": 30.732,
     "elevation_m": "~1050",
     "terrain": "İscehisar ovası, mermer-kireçtaşı tabanlı dere yatakları",
     "distance_km": 16.0,
@@ -268,7 +268,7 @@
     "source_deposit": "MTA 27 resmi 'Potansiyel Altın Sahası' listesi (Karaağaç)",
     "lithology": "Mermer, kireçtaşı, ofiyolitik temel",
     "indicators": "Kireçtaşı/mermer çakılı yataklar, limonit, manyetik siyah kum",
-    "reasoning": "MTA'nın 2020 sonrası paylaştığı 27 resmi 'potansiyel altın sahası' listesinde **Karaağaç** yer alıyor (aynı isimde iki köy: İscehisar ve Emirdağ). Bu liste 'faal maden' değil 'potansiyel sahası' listesidir - yani MTA altın olabileceğini resmi olarak işaretlemiştir. Karaağaç, İscehisar'ın kuzeydoğusunda Aşağısağırı altınlı demir yatağına ~2-3 km mesafede, yani maden kuşağının TAM ÜZERİNDE. İki noktayı birlikte değerlendirin: yatağın kendisi + 2 km güneyindeki dere çıkışı.",
+    "reasoning": "MTA'nın 2020 sonrası paylaştığı 27 resmi 'potansiyel altın sahası' listesinde Karaağaç yer alıyor (aynı isimde iki köy: İscehisar ve Emirdağ). Bu liste 'faal maden' değil 'potansiyel sahası' listesidir - yani MTA altın olabileceğini resmi olarak işaretlemiştir. Karaağaç, İscehisar'ın kuzeydoğusunda Aşağısağırı altınlı demir yatağına ~2-3 km mesafede, yani maden kuşağının TAM ÜZERİNDE. İki noktayı birlikte değerlendirin: yatağın kendisi + 2 km güneyindeki dere çıkışı.",
     "description": "İscehisar ilçesi kuzeyi, Karaağaç köyü. MTA resmi potansiyel altın sahası; Aşağısağırı yatağına çok yakın."
   },
   {
