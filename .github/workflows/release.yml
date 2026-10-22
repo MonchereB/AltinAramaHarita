@@ -63,20 +63,20 @@ jobs:
           set -e
           mkdir -p app/src/main/assets/offline
           FOUND=0
-          # 1) Onceki surumden hazir MBTiles'i indir (hizli, karo sunucusuna yuk bindirmez)
-          PREV=$(git tag --sort=-v:refname | grep -v "^${GITHUB_REF_NAME}$" | head -1 || true)
-          if [ -n "$PREV" ]; then
-            echo "Onceki surumden deneniyor: $PREV"
-            gh release download "$PREV" --pattern "afyon.mbtiles" \
-              --dir app/src/main/assets/offline || true
-            [ -f app/src/main/assets/offline/afyon.mbtiles ] && FOUND=1
-          fi
-          # 2) Yoksa en son surumden dene
+          # 1) EN SON surumdeki haritayi kullan (her surumde guncel harita bir sonrakine aktarilir)
+          echo "En son surumden deneniyor..."
+          gh release download --pattern "afyon.mbtiles" \
+            --dir app/src/main/assets/offline || true
+          [ -f app/src/main/assets/offline/afyon.mbtiles ] && FOUND=1
+          # 2) Yoksa onceki etiketten dene
           if [ "$FOUND" -eq 0 ]; then
-            echo "En son surumden deneniyor..."
-            gh release download --pattern "afyon.mbtiles" \
-              --dir app/src/main/assets/offline || true
-            [ -f app/src/main/assets/offline/afyon.mbtiles ] && FOUND=1
+            PREV=$(git tag --sort=-v:refname | grep -v "^${GITHUB_REF_NAME}$" | head -1 || true)
+            if [ -n "$PREV" ]; then
+              echo "Onceki surumden deneniyor: $PREV"
+              gh release download "$PREV" --pattern "afyon.mbtiles" \
+                --dir app/src/main/assets/offline || true
+              [ -f app/src/main/assets/offline/afyon.mbtiles ] && FOUND=1
+            fi
           fi
           # 3) Hicbiri yoksa sifirdan uret
           if [ "$FOUND" -eq 0 ]; then
