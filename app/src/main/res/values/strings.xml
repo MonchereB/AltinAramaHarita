@@ -34,4 +34,26 @@
     <string name="update_download_failed">İndirme başarısız: %1$s</string>
     <string name="update_install_failed">Kurulum başlatılamadı</string>
     <string name="update_check_failed">Güncelleme kontrol edilemedi: %1$s</string>
+
+    <!-- Menü -->
+    <string name="menu_open">Menü</string>
+    <string name="menu_title">Altın Arama Harita</string>
+    <string name="menu_subtitle">Afyonkarahisar çevresi · çevrimdışı topografik harita</string>
+    <string name="menu_update">Sürüm Güncelleme</string>
+    <string name="menu_legal">Yasal Uyarı</string>
+    <string name="menu_offline">Çevrimdışı Harita Bilgisi</string>
+    <string name="menu_version_note">Harita: © OpenStreetMap katılımcıları · OpenTopoMap (CC-BY-SA)</string>
+
+    <!-- Güncelleme akışı -->
+    <string name="update_current_title">Sürümünüz güncel</string>
+    <string name="update_current_msg">Kullandığınız sürüm (v%1$s) en güncel sürümdür. Yeni sürüm çıktığında uygulama sizi uyaracak.</string>
+    <string name="update_checking_title">Kontrol ediliyor…</string>
+    <string name="update_need_permission_title">Kurulum izni gerekli</string>
+    <string name="update_need_permission_msg">Güncelleme kurabilmek için Android\'e bu uygulamaya "bilinmeyen kaynaklardan uygulama kurma" izni vermeniz gerekiyor. Ayarları açıp izni verebilirsiniz.</string>
+    <string name="update_open_settings">Ayarları Aç</string>
+    <string name="update_verifying">İndirilen dosya doğrulanıyor…</string>
+    <string name="update_download_invalid">İndirilen dosya geçerli bir APK değil</string>
+    <string name="update_restarting">Güncelleme tamamlandı, uygulama yeniden başlatılıyor…</string>
+    <string name="offline_info_title">Çevrimdışı Harita</string>
+    <string name="offline_info_msg">Bu uygulama Afyonkarahisar ve çevresinin OpenTopoMap topografik haritasını cihazınıza gömülü olarak taşır.\n\n• Bölge (zoom 10-11)\n• İl geneli (zoom 12)\n• Çalışma alanı (zoom 13)\n• Şehir merkezi (zoom 14-15)\n\nKapsanan alanların dışına uzaklaştırırsanız harita boş görünür.\n\nHarita verileri: © OpenStreetMap katılımcıları, OpenTopoMap (CC-BY-SA)</string>
 </resources>

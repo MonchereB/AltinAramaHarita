@@ -26,13 +26,15 @@ zeminler ve yasal olarak kısıtlı bölgeler işaretlenmiş harita uygulaması.
 
 | Özellik | Açıklama |
 |---|---|
-| **Tam çevrimdışı harita** | 2400+ OpenTopoMap karosu uygulamanın içine gömülü — **internetsiz** çalışır |
-| **Topografik detay** | Eş yükselti eğrileri, tepe yükseklikleri, patikalar, akarsu yatakları |
-| **Altın noktaları** | Dere yatakları koordinat, yaklaşık irtifa, arazi tipi ve mesafe bilgisiyle |
-| **Yasaklı alanlar** | Milli park / tabiat parkı sınırları yeşil alan olarak işaretli |
+| **Tam çevrimdışı harita** | 3000+ OpenTopoMap karosu uygulamanın içine gömülü — **internetsiz** çalışır |
+| **Net karo çizimi** | Karolar 1:1 pikselde çizilir (DPI büyütme kapalı) + z16/z17 detay karoları → dere ve mendereler net görünür |
+| **Spesifik noktalar** | Her pin bir **köy merkezine değil**, kriterlerin karşılandığı **akarsu yatağındaki tam noktaya** sabitlenmiştir; o noktanın rakımı, akarsu adı ve segment uzunluğu yazılıdır |
+| **Jeolojik gerekçe** | Her pin: sıralama, kanıt gücü, bilinen cevher, litoloji, arazide aranacak göstergeler ve maden mühendisi değerlendirmesi |
+| **Yasaklı alanlar** | Milli park / jeotermal alan sınırları haritada görünür (yalnızca merkez işaretine tıklayınca detay açılır) |
 | **Google Haritalar rotası** | Bir noktaya tıklayıp doğrudan rota oluşturun |
+| **⋮ Menü** | Sağ üstteki üç çizgi menüsü: Sürüm Güncelleme, Yasal Uyarı, Çevrimdışı Harita Bilgisi — en altında sürüm numarası |
+| **Otomatik güncelleme** | GitHub Releases üzerinden; yüzde göstergeli indirme, doğrulama, kurulum ve **kurulum sonrası otomatik yeniden başlatma** |
 | **GPS** | Konumunuzu merkeze alın, pusula ve ölçek çubuğu |
-| **Otomatik güncelleme** | GitHub Releases üzerinden uygulama içinden güncelleme |
 
 ---
 
@@ -190,6 +192,10 @@ sıralaması, kanıt gücü, bilinen cevher, litoloji, arazide aranacak gösterg
 5. **Boulder arkası** — Akış hızı düşer, ağır mineral ve altın birikir
 6. **Taban kaya çatlakları** — Çatlak taban kayaya sıkışmış altın, panla zor çıkar ama vardır
 7. **Ayrışma zonu** — Cevherin üstündeki toprak kırmızı-sarı boyalıysa altın taşınıyor demektir
+
+> 📌 **Pinler köy merkezinde değil, akarsu yatağında olan noktalardadır.**
+> Diyalogdaki "Bu noktada rakım … m" ve "akarsu bu bölümde ≈… m uzunlukta"
+> bilgisi, o spesifik noktanın verisidir (Open-Elevation API + OSM akarsu geometrisi).
 
 > ⚠️ **Unutmayın:** Siyah kum **altın kanıtı değildir**, sadece olasılık artırıcıdır.
 > Ve Türkiye'de bu faaliyet için **resmi ruhsat** gereklidir (3213 sayılı Maden Kanunu).

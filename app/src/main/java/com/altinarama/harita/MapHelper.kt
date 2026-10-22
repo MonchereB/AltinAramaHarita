@@ -76,7 +76,7 @@ class MapHelper(private val context: Context, private val mapView: MapView) {
                     description = obj.optString(RestrictedArea.KEY_DESCRIPTION, "")
                 )
                 areas.add(area)
-                addRestrictedPolygon(area, onAreaClick)
+                addRestrictedPolygon(area)
                 addRestrictedMarker(area, onAreaClick)
             }
         } catch (e: Exception) {
@@ -130,21 +130,19 @@ class MapHelper(private val context: Context, private val mapView: MapView) {
     }
 
     /** OSMDroid 6.1'de Circle kaldırıldığı için daire Polygon olarak çizilir. */
-    private fun addRestrictedPolygon(area: RestrictedArea, onAreaClick: (RestrictedArea) -> Unit) {
+    private fun addRestrictedPolygon(area: RestrictedArea) {
         val center = GeoPoint(area.lat, area.lon)
         val polygon = Polygon(mapView)
         polygon.points = Polygon.pointsAsCircle(center, area.radiusM)
         // Not: setFillColor/setStrokeColor 6.1'de deprecated; Paint API kullanılır.
-        polygon.getFillPaint().setColor(Color.parseColor("#662E7D32"))   // yarı saydam yeşil dolgu
+        polygon.getFillPaint().setColor(Color.parseColor("#2E2E7D32"))   // çok hafif yeşil dolgu (harita okunabilir kalsın)
         polygon.getOutlinePaint().setColor(Color.parseColor("#2E7D32"))
-        polygon.getOutlinePaint().setStrokeWidth(3f)
+        polygon.getOutlinePaint().setStrokeWidth(4f)
         polygon.title = area.name
         polygon.snippet = area.type
-        // Alanin uzerine tiklaninca da detay diyalogu acilsin
-        polygon.setOnClickListener { _, _, _ ->
-            onAreaClick(area)
-            true
-        }
+        // Alan yalnızca GÖRÜNTÜ amaçlı: tıklanınca bilgi penceresi açılmasın.
+        // Sadece merkezdeki uyarı işareti (Marker) tıklanabilirdir.
+        polygon.setOnClickListener { _, _, _ -> true }
         mapView.overlayManager.add(polygon)
     }
 

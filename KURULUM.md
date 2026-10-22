@@ -190,7 +190,39 @@ adb logcat | findstr OsmDroid
 
 ---
 
-## 7. Derleme komutları (referans)
+## 7. Arayüz
+
+### ⋮ Menü (sağ üst köşe)
+Üç çizgi simgesi açılır, alttan yukarı açılan bir panel gelir:
+
+| Öğe | İşlev |
+|---|---|
+| **Sürüm Güncelleme** | GitHub'ı kontrol eder. Sürüm güncelse *"Sürümünüz güncel"* der; değilse *"Güncelle"* seçeneği çıkar |
+| **Yasal Uyarı** | 3213 sayılı Maden Kanunu uyarısı |
+| **Çevrimdışı Harita Bilgisi** | Harita kapsamı ve zoom dağılımı |
+| *(en altta)* | **Sürüm v1.1.0 • build 110** |
+
+### Harita netliği
+Uygulama **256px karoları 1:1 çizer** (`setTilesScaledToDpi(false)`).
+Bunu yapmazsa cihaz DPI'sına göre 2.6x büyütülür ve harita bulanıklaşır
+(yol adları, dere kenarları okunmaz olur). Buna ek olarak **z16 ve z17 detay
+karoları** her altın noktasının etrafına indirilir (z16: 3x3 blok, z17: 5x5 blok)
+→ dere yatağı ve mendereler net görünür.
+
+### Pin konumları
+Pinler köy merkezine değil, **kriterlerin karşılandığı akarsu yatağındaki tam
+noktaya** sabitlenmiştir. Bu noktalar OSM'nin akarsu geometrisi (Overpass) ve
+Open-Elevation API'si ile belirlenmiştir. Diyalogda o noktanın:
+- koordinatı, **gerçek rakımı** (m)
+- bulunduğu akarsunun adı (Akarçay, Kali Çay, Karadirek Çayı, Büyük Menderes, Çay Deresi…)
+- işaretlenen akarsu segmentinin uzunluğu
+- yerleşim merkezine uzaklığı
+
+yazılıdır.
+
+---
+
+## 8. Derleme komutları (referans)
 
 ```bash
 # Debug APK üret
@@ -211,7 +243,7 @@ adb logcat | findstr "altinarama"
 
 ---
 
-## 8. GitHub Yayın ve Otomatik Güncelleme
+## 9. GitHub Yayın ve Otomatik Güncelleme
 
 ### Depo
 👉 **https://github.com/MonchereB/AltinAramaHarita**

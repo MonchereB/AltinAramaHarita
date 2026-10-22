@@ -55,6 +55,12 @@ CITY_CORE = {
     "zooms": [15],
 }
 
+# --- Plan: HER ALTIN NOKTASI icin yakin yakin DETAY karolari ---
+# z16: 3x3 blok (yaklasik 1.8 km x 1.8 km) -> dere yatagi ve mendereler net
+# z17: 5x5 blok (yaklasik 1.5 km x 1.5 km) -> akarsu kenari ve dere tabani detayi
+SITE_ZOOMS = [16, 17]
+SITE_BLOCK = {16: 1, 17: 2}   # yaricap: 1 = 3x3, 2 = 5x5
+
 THREADS = 3          # sunucuya nazik kalmak icin
 DELAY = 0.35         # istek basina bekleme (sn)
 
@@ -83,6 +89,33 @@ def collect(spec):
             for y in range(min(y0, y1), max(y0, y1) + 1):
                 if 0 <= y < n:
                     _tiles.append((z, x, y))
+
+
+def collect_sites(sites):
+    """Her altin noktasinin etrafina detay karolari (z16/z17) ekler."""
+    for lat, lon, name in sites:
+        for z in SITE_ZOOMS:
+            r = SITE_BLOCK.get(z, 1)
+            cx, cy = deg2num(lat, lon, z)
+            n = 2 ** z
+            for x in range(cx - r, cx + r + 1):
+                for y in range(cy - r, cy + r + 1):
+                    if 0 <= x < n and 0 <= y < n:
+                        _tiles.append((z, x, y))
+        print(f"  detay karolari eklendi: {name} (z16/z17)")
+
+
+def read_pin_sites():
+    """locations.json icindeki altin noktalarini okur (her zaman senkron kalsin)."""
+    import json
+    p = os.path.join(HERE, "..", "app", "src", "main", "assets", "locations.json")
+    try:
+        with open(p, encoding="utf-8") as f:
+            data = json.load(f)
+        return [(float(d["lat"]), float(d["lon"]), d.get("name", "")) for d in data]
+    except Exception as e:
+        print(f"locations.json okunamadi ({e}); pin detay karolari atlandi")
+        return []
 
 
 def fetch_one(job):
@@ -151,6 +184,12 @@ def main():
 
     for spec in (REGION, DISTRICT, MID, CITY, CITY_CORE):
         collect(spec)
+
+    # Her altin noktasinin etrafina detay karolari (z16/z17) - dere/mendere netligi
+    sites = read_pin_sites()
+    if sites:
+        print(f"{len(sites)} altin noktasi icin z16/z17 detay karolari ekleniyor...")
+        collect_sites(sites)
 
     # Veritabaninda zaten olanlari at
     todo = []

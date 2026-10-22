@@ -51,7 +51,7 @@
             </intent-filter>
         </activity>
 
-        <!-- Guncellestirilen APK'yi sistem kurulum ekranina aktarmak icin -->
+        <!-- Guncellestirilen APK'yi sistem kurulum ekraninda acmak icin. -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
@@ -61,6 +61,18 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+        <!-- Paket guncellendiginde uygulamayi yeniden baslatir.
+             MY_PACKAGE_REPLACED korumali (protected) bir yayindir; sadece sistem
+             tarafindan gonderilebilir. -->
+        <receiver
+            android:name=".UpdateReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
 
         <!-- OSMDroid kullanıcı aracısı (OpenStreetMap kullanım politikası) -->
         <meta-data

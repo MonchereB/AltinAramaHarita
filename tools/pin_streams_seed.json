@@ -1,0 +1,11 @@
+{
+ "1":  {"id":1,"ad":"Aşağısağırı","center":[38.9,30.73],"lat":38.89735,"lon":30.74657,"elev_m":1124.773315,"waterway":"stream","name":"","seg_len_m":3444,"dist_from_center_m":1464},
+ "3":  {"id":3,"ad":"Gazlıgöl","center":[38.93193,30.5007],"lat":38.8989,"lon":30.51267,"elev_m":1031.968872,"waterway":"stream","name":"","seg_len_m":7586,"dist_from_center_m":3816},
+ "4":  {"id":4,"ad":"Kıyır","center":[39.03604,30.68992],"lat":39.07724,"lon":30.66532,"elev_m":1264.186646,"waterway":"stream","name":"","seg_len_m":3939,"dist_from_center_m":5049},
+ "5":  {"id":5,"ad":"Karacaören","center":[38.48605,30.29019],"lat":38.47475,"lon":30.27089,"elev_m":1105.853394,"waterway":"stream","name":"","seg_len_m":2753,"dist_from_center_m":2098},
+ "7":  {"id":7,"ad":"Bolvadin","center":[38.71159,31.04549],"lat":38.66566,"lon":30.95027,"elev_m":973.053345,"waterway":"stream","name":"Akarçay","seg_len_m":20117,"dist_from_center_m":9715},
+ "8":  {"id":8,"ad":"Balçıkhisar","center":[38.43787,30.52067],"lat":38.46904,"lon":30.54532,"elev_m":1145.422241,"waterway":"stream","name":"Kali Çay","seg_len_m":9158,"dist_from_center_m":4077},
+ "9":  {"id":9,"ad":"Geçek","center":[38.85092,30.42633],"lat":38.85139,"lon":30.39711,"elev_m":1051.768921,"waterway":"stream","name":"Akarçay","seg_len_m":9248,"dist_from_center_m":2531},
+ "10": {"id":10,"ad":"Mallıca","center":[39.09083,30.82524],"lat":39.08862,"lon":30.86214,"elev_m":1327.568848,"waterway":"stream","name":"","seg_len_m":1861,"dist_from_center_m":3194},
+ "11": {"id":11,"ad":"Sandıklı","center":[38.45847,30.2608],"lat":38.45026,"lon":30.22596,"elev_m":1027.271118,"waterway":"stream","name":"","seg_len_m":5396,"dist_from_center_m":3168}
+}

@@ -2,10 +2,10 @@ package com.altinarama.harita
 
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import android.provider.Settings
 import android.util.Log
 import androidx.core.content.FileProvider
 import org.json.JSONObject
@@ -20,12 +20,11 @@ import java.util.concurrent.Executors
  *
  * Akış:
  *  1. GitHub Releases API'den en son sürüm sorgulanır
- *  2. İndirilecek APK'nın sürüm kodu, kurulu sürümle karşılaştırılır
- *  3. Yeni sürüm varsa APK indirilir ve kullanıcı onayıyla kurulur
- *
- * Güvenlik: Yalnızca [GITHUB_OWNER]/[GITHUB_REPO] deposundaki sürümler
- * değerlendirilir, indirme HTTPS üzerinden yapılır ve kurulum için
- * Android'un kendi sistem onay penceresi gösterilir.
+ *  2. Sürüm kodu karşılaştırılır (etiketten hesaplanır - hızlı)
+ *  3. Kullanıcı onayıyla APK indirilir (yüzde ilerleme ile)
+ *  4. İndirilen APK doğrulanır (PackageManager ile)
+ *  5. Android'un sistem kurulum ekranı açılır
+ *  6. Kurulum sonrası uygulama yeniden başlatılır (UpdateReceiver)
  */
 object UpdateChecker {
 
@@ -45,8 +44,13 @@ object UpdateChecker {
         val body: String,
         val apkUrl: String,
         val versionCode: Int,
+        val versionName: String,
         val publishedAt: String
     )
+
+    // ------------------------------------------------------------------
+    // Kurulu sürüm bilgisi
+    // ------------------------------------------------------------------
 
     /** Kurulu sürümün versionCode değeri. */
     fun installedVersionCode(context: Context): Int = try {
@@ -60,6 +64,51 @@ object UpdateChecker {
     } catch (e: Exception) {
         0
     }
+
+    /** Kurulu sürümün versionName değeri (örn. "1.1.0"). */
+    fun installedVersionName(context: Context): String = try {
+        context.packageManager.getPackageInfo(context.packageName, 0).versionName ?: "?"
+    } catch (e: Exception) {
+        "?"
+    }
+
+    /**
+     * Uygulamanın "bilinmeyen kaynaklardan kurma" izni var mı?
+     * Android 8.0+ için gereklidir.
+     */
+    fun canRequestPackageInstalls(context: Context): Boolean = try {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.packageManager.canRequestPackageInstalls()
+        } else {
+            true
+        }
+    } catch (e: Exception) {
+        true
+    }
+
+    /** "Bilinmeyen kaynaklardan uygulama kurma" ayarlarını açar. */
+    fun openInstallSettings(context: Context): Boolean = try {
+        val intent = Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES).apply {
+            data = Uri.parse("package:${context.packageName}")
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        context.startActivity(intent)
+        true
+    } catch (e: Exception) {
+        try {
+            context.startActivity(
+                Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            )
+            true
+        } catch (e2: Exception) {
+            false
+        }
+    }
+
+    // ------------------------------------------------------------------
+    // Sürüm kontrolü
+    // ------------------------------------------------------------------
 
     /**
      * GitHub'daki en son sürümü sorgular.
@@ -79,8 +128,8 @@ object UpdateChecker {
                 }
                 if (conn.responseCode == 200) {
                     val body = conn.inputStream.use { it.readBytes().toString(Charsets.UTF_8) }
-                    result = parseRelease(context, JSONObject(body))
-                    Log.i(TAG, "Guncel surum bulundu: ${result?.tagName} (versionCode=${result?.versionCode})")
+                    result = parseRelease(JSONObject(body))
+                    Log.i(TAG, "Guncel surum: ${result?.tagName} (versionCode=${result?.versionCode})")
                 } else {
                     error = "GitHub yanıtı: ${conn.responseCode}"
                     Log.w(TAG, "GitHub API hatasi: ${conn.responseCode}")
@@ -88,7 +137,7 @@ object UpdateChecker {
                 conn.disconnect()
             } catch (e: Exception) {
                 error = e.message ?: "Bağlantı hatası"
-                Log.w(TAG, "Guncelleme kontrolu basarisiz: ${e.message}")
+                Log.w(TAG, "Kontrol basarisiz: ${e.message}")
             }
             android.os.Handler(android.os.Looper.getMainLooper()).post {
                 callback(result, error)
@@ -96,7 +145,7 @@ object UpdateChecker {
         }
     }
 
-    private fun parseRelease(context: Context, json: JSONObject): ReleaseInfo? {
+    private fun parseRelease(json: JSONObject): ReleaseInfo? {
         val tag = json.optString("tag_name", "")
         val assets = json.optJSONArray("assets") ?: return null
         var apkUrl = ""
@@ -110,26 +159,35 @@ object UpdateChecker {
         }
         if (apkUrl.isEmpty()) return null
 
-        // Surum kodunu once etiketten hesapla (hizli).
-        // Etiket okunamazsa APK'yi indirip icindeki versionCode'u okuruz (yavas).
-        val remoteVersion = versionCodeFromTag(tag)
-            ?: readVersionCodeFromUrl(context, apkUrl)
-            ?: 0
+        // Surum kodunu etiketten hesapla (hizli, 85 MB indirme gerekmez)
+        val versionName = tag.removePrefix("v")
+        val versionCode = versionCodeFromTag(tag) ?: 0
 
         return ReleaseInfo(
             tagName = tag,
             name = json.optString("name", tag),
-            body = json.optString("body", ""),
+            body = cleanMarkdown(json.optString("body", "")),
             apkUrl = apkUrl,
-            versionCode = remoteVersion,
+            versionCode = versionCode,
+            versionName = versionName,
             publishedAt = json.optString("published_at", "")
         )
     }
 
+    /** Sürüm notlarındaki markdown işaretlerini temizler (düz metin gösterim için). */
+    private fun cleanMarkdown(text: String): String = text
+        .replace(Regex("(?m)^#{1,6}\\s*"), "")      // başlıklar
+        .replace("**", "")                            // kalın
+        .replace("__", "")
+        .replace("*", "")                             // italik / madde
+        .replace("`", "")                             // kod
+        .replace(Regex("(?m)^[-•]\\s*"), "• ")         // madde isaretleri
+        .replace(Regex("\\n{3,}"), "\n\n")
+        .trim()
+
     /**
      * Release etiketinden versionCode hesaplar.
-     * CI ile ayni formül: major*100 + minor*10 + patch
-     * (v1.2.3 -> 123)
+     * CI ile ayni formül: major*100 + minor*10 + patch (v1.2.3 -> 123)
      */
     private fun versionCodeFromTag(tag: String): Int? {
         val m = Regex("""v?(\d+)\.(\d+)\.(\d+)""").find(tag) ?: return null
@@ -137,77 +195,31 @@ object UpdateChecker {
         return major.toInt() * 100 + minor.toInt() * 10 + patch.toInt()
     }
 
-    /**
-     * Uzak APK'yi indirip versionCode'unu okur.
-     * Dosya aynı zamanda indirme klasorune yazilir.
-     */
-    private fun readVersionCodeFromUrl(context: Context, apkUrl: String): Int? {
-        return try {
-            val tmp = File(context.cacheDir, "update-check.apk")
-            downloadFile(apkUrl, tmp)
-            packageVersionCode(context, tmp.absolutePath)
-        } catch (e: Exception) {
-            Log.w(TAG, "Uzak versionCode okunamadi: ${e.message}")
-            null
-        }
-    }
-
-    /** Verilen adrese dosyayı indirir. */
-    private fun downloadFile(urlString: String, target: File) {
-        val conn = (URL(urlString).openConnection() as HttpURLConnection).apply {
-            requestMethod = "GET"
-            connectTimeout = 20000
-            readTimeout = 30000
-            setRequestProperty("User-Agent", "AltinAramaHarita/Updater")
-        }
-        try {
-            conn.inputStream.use { input ->
-                target.outputStream().use { out ->
-                    input.copyTo(out)
-                }
-            }
-        } finally {
-            conn.disconnect()
-        }
-    }
-
-    /** Verilen APK dosyasindaki versionCode degerini okur. */
-    fun packageVersionCode(context: Context, apkPath: String): Int? = try {
-        val pm = context.packageManager
-        val info = pm.getPackageArchiveInfo(apkPath, 0)
-        if (info == null) {
-            null
-        } else {
-            @Suppress("DEPRECATION")
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                info.longVersionCode.toInt()
-            } else {
-                info.versionCode
-            }
-        }
-    } catch (e: Exception) {
-        null
-    }
+    // ------------------------------------------------------------------
+    // İndirme
+    // ------------------------------------------------------------------
 
     /**
-     * APK'yi indirir.
-     * @param onProgress (yuzde) - arayuzden çağrılır
+     * APK'yı indirir.
+     * @param onProgress (yüzde 0-100, indirilen bayt) - ana iş parçacığında çağrılır
+     * @param onDone (dosya, hata) - dosya null ise hata oluşmuştur
      */
     fun downloadApk(
         context: Context,
         apkUrl: String,
-        onProgress: (Int) -> Unit,
+        onProgress: (Int, Long) -> Unit,
         onDone: (File?, String?) -> Unit
     ) {
         Executors.newSingleThreadExecutor().execute {
             var error: String? = null
             var file: File? = null
             try {
-                // Uygulamaya ozel harici depolama - ek izin gerektirmez (API 29+ guvenli)
                 val dir = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
                     ?: File(context.filesDir, "downloads")
                 if (!dir.exists()) dir.mkdirs()
                 val target = File(dir, "AltinAramaHarita-yeni.apk")
+                // Onceki yarim dosyayi temizle
+                if (target.exists()) target.delete()
 
                 val conn = (URL(apkUrl).openConnection() as HttpURLConnection).apply {
                     requestMethod = "GET"
@@ -227,20 +239,45 @@ object UpdateChecker {
                             out.write(buf, 0, read)
                             downloaded += read
                             if (total > 0) {
-                                val percent = ((downloaded * 100) / total).toInt()
+                                val percent = ((downloaded * 100) / total).toInt().coerceIn(0, 100)
                                 if (percent != lastPercent) {
                                     lastPercent = percent
                                     android.os.Handler(android.os.Looper.getMainLooper())
-                                        .post { onProgress(percent) }
+                                        .post { onProgress(percent, downloaded) }
                                 }
+                            } else {
+                                android.os.Handler(android.os.Looper.getMainLooper())
+                                    .post { onProgress(-1, downloaded) }
                             }
                         }
                     }
                 }
                 conn.disconnect()
-                file = target
+
+                // --- Dogrulama: gercekten gecerli bir APK mi? ---
+                if (target.length() < 100000) {
+                    error = "Dosya beklenenden küçük (${target.length()} bayt)"
+                    target.delete()
+                } else {
+                    val info = context.packageManager.getPackageArchiveInfo(
+                        target.absolutePath, 0
+                    )
+                    if (info == null) {
+                        error = "APK okunamadı"
+                        target.delete()
+                    } else {
+                        val remoteCode = packageVersionCode(context, target.absolutePath) ?: 0
+                        if (remoteCode <= installedVersionCode(context)) {
+                            error = "İndirilen sürüm kurulu sürümden eski"
+                            target.delete()
+                        } else {
+                            file = target
+                        }
+                    }
+                }
             } catch (e: Exception) {
                 error = e.message ?: "İndirme hatası"
+                Log.e(TAG, "Indirme hatasi", e)
             }
             android.os.Handler(android.os.Looper.getMainLooper()).post {
                 onDone(file, error)
@@ -248,8 +285,29 @@ object UpdateChecker {
         }
     }
 
+    /** Verilen APK dosyasindaki versionCode degerini okur. */
+    fun packageVersionCode(context: Context, apkPath: String): Int? = try {
+        val info = context.packageManager.getPackageArchiveInfo(apkPath, 0)
+        if (info == null) {
+            null
+        } else {
+            @Suppress("DEPRECATION")
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                info.longVersionCode.toInt()
+            } else {
+                info.versionCode
+            }
+        }
+    } catch (e: Exception) {
+        null
+    }
+
+    // ------------------------------------------------------------------
+    // Kurulum
+    // ------------------------------------------------------------------
+
     /**
-     * İndirilen APK'yı kurulum ekranında açar.
+     * İndirilen APK'yı sistem kurulum ekranında açar.
      * Android sistem onay penceresini gösterir.
      */
     fun installApk(context: Context, apkFile: File): Boolean {
