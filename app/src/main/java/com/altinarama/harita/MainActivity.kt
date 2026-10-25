@@ -5,11 +5,13 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -57,6 +59,10 @@ class MainActivity : AppCompatActivity() {
 
         mapView = findViewById(R.id.mapView)
         mapView.setTileSource(tileResult.tileSource)
+        // ⚠️ setTileSource kaynak maxZoom'u MapView'a uygulamaz; CANLI'da Google z23
+        // isteklerine "Bad Request" veriyor (mozaik görüntü). Tiketten kapat:
+        mapView.setMaxZoomLevel(20.0)
+        mapView.setMinZoomLevel(8.0)
         findViewById<TextView>(R.id.tvLayerInfo).text = buildString {
             append(tileResult.note)
             append("  |  ")
@@ -95,11 +101,28 @@ class MainActivity : AppCompatActivity() {
             showRestrictedInfoDialog(area)
         }
 
-        // Başlangıç: Afyonkarahisar merkezi
-        mapHelper.centerOnAfyon()
+        // Başlangıç kamera: sistem değişince kaydedilen konuma dön; yoksa Afyon merkezi
+        val saved = TileSourceProvider.loadCamera(this)
+        if (saved != null && saved.first != 0.0 && saved.second != 0.0) {
+            mapView.controller.setZoom(saved.third)
+            mapView.controller.setCenter(GeoPoint(saved.first, saved.second))
+        } else {
+            mapHelper.centerOnAfyon()
+        }
+
+        // QA kancası: adb ile "am start --es qa_center lat,lon --ei qa_zoom 19"
+        // -> kamera deterministik ayarlanır (UI otomasyon testleri için).
+        intent?.getStringExtra("qa_center")?.let { qa ->
+            runCatching {
+                val p = qa.split(",").map { it.trim().toDouble() }
+                mapView.controller.setZoom(intent.getIntExtra("qa_zoom", 17).toDouble())
+                mapView.controller.setCenter(GeoPoint(p[0], p[1]))
+            }
+        }
 
         // Düğmeler
-        findViewById<Button>(R.id.btnCenterMyLocation).setOnClickListener {
+        findViewById<com.google.android.material.floatingactionbutton.FloatingActionButton>(
+            R.id.btnCenterMyLocation).setOnClickListener {
             goToMyLocation()
         }
         findViewById<com.google.android.material.floatingactionbutton.FloatingActionButton>(
@@ -107,6 +130,70 @@ class MainActivity : AppCompatActivity() {
         ).setOnClickListener {
             showMenu()
         }
+        setupStyleToggle()
+    }
+
+    // ------------------------------------------------------------------
+    // Harita stili değişimi (TOPO / UYDU)
+    // ------------------------------------------------------------------
+
+    /** TOPO | UYDU | CANLI çiplerini bağlar ve aktif stili boyar. */
+    private fun setupStyleToggle() {
+        val chipTopo = findViewById<TextView>(R.id.chipTopo)
+        val chipSat = findViewById<TextView>(R.id.chipSat)
+        val chipLive = findViewById<TextView>(R.id.chipLive)
+        val current = TileSourceProvider.currentStyle(this)
+        paintStyleChips(chipTopo, chipSat, chipLive, current)
+
+        chipTopo.setOnClickListener {
+            if (current != TileSourceProvider.STYLE_TOPO) {
+                switchMapStyle(TileSourceProvider.STYLE_TOPO)
+            }
+        }
+        chipSat.setOnClickListener {
+            if (current != TileSourceProvider.STYLE_SAT) {
+                switchMapStyle(TileSourceProvider.STYLE_SAT)
+            }
+        }
+        chipLive.setOnClickListener {
+            if (current != TileSourceProvider.STYLE_LIVE) {
+                switchMapStyle(TileSourceProvider.STYLE_LIVE)
+            }
+        }
+    }
+
+    private fun paintStyleChips(topo: TextView, sat: TextView, live: TextView, style: String) {
+        for (chip in listOf(topo, sat, live)) {
+            val isActive = when (chip) {
+                topo -> style == TileSourceProvider.STYLE_TOPO
+                sat -> style == TileSourceProvider.STYLE_SAT
+                else -> style == TileSourceProvider.STYLE_LIVE
+            }
+            if (isActive) {
+                chip.setBackgroundResource(R.drawable.bg_toggle_active)
+                chip.setTextColor(Color.WHITE)
+            } else {
+                chip.setBackgroundResource(R.drawable.bg_toggle)
+                chip.setTextColor(ContextCompat.getColor(this, R.color.text_primary))
+            }
+        }
+    }
+
+    /** Stil değişince MapView'ın arşiv dizini yeniden taranmalıdır; recreate gerekli. */
+    private fun switchMapStyle(newStyle: String) {
+        val center = mapView.mapCenter
+        TileSourceProvider.saveCamera(this, center.latitude, center.longitude, mapView.zoomLevelDouble)
+        TileSourceProvider.setStyle(this, newStyle)
+        Toast.makeText(
+            this,
+            when (newStyle) {
+                TileSourceProvider.STYLE_SAT -> getString(R.string.style_sat_desc) + " yükleniyor…"
+                TileSourceProvider.STYLE_LIVE -> getString(R.string.style_live_desc) + " yükleniyor…"
+                else -> getString(R.string.style_topo_desc) + " yükleniyor…"
+            },
+            Toast.LENGTH_SHORT
+        ).show()
+        recreate()
     }
 
     // ------------------------------------------------------------------
@@ -131,6 +218,12 @@ class MainActivity : AppCompatActivity() {
             checkForUpdateFromMenu()
         }
 
+        // Arazide altın rehberi
+        view.findViewById<View>(R.id.menuGuide).setOnClickListener {
+            sheet.dismiss()
+            showFieldGuideDialog()
+        }
+
         // Yasal uyarı
         view.findViewById<View>(R.id.menuLegal).setOnClickListener {
             sheet.dismiss()
@@ -145,6 +238,15 @@ class MainActivity : AppCompatActivity() {
 
         sheet.setContentView(view)
         sheet.show()
+    }
+
+    /** Genel arazi rehberi (altın nerede birikir, savak tekniği, testler). */
+    private fun showFieldGuideDialog() {
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.guide_title))
+            .setMessage(getString(R.string.guide_text))
+            .setPositiveButton(android.R.string.ok, null)
+            .show()
     }
 
     // ------------------------------------------------------------------
@@ -313,66 +415,178 @@ class MainActivity : AppCompatActivity() {
             .show()
     }
 
-    /** Seçilen altın noktası için bilgi diyaloğunu gösterir. */
+    /** Kanıt gücü rengine göre renk üretir. */
+    private fun confidenceColor(conf: String): Int = when {
+        conf.contains("ÇOK") -> Color.parseColor("#B71C1C")
+        conf.contains("YÜKSEK") -> Color.parseColor("#E65100")
+        conf.contains("ORTA") -> Color.parseColor("#F9A825")
+        else -> Color.parseColor("#757575")
+    }
+
+    /** Savak uygunluk puanına göre renk. */
+    private fun panningColor(grade: String): Int = when {
+        grade.contains("ÇOK") -> Color.parseColor("#2E7D32")
+        grade.contains("İYİ") || grade.contains("UYGUN") -> Color.parseColor("#43A047")
+        grade.contains("ORTA") -> Color.parseColor("#F9A825")
+        grade.contains("SINIR") || grade.contains("REVİZE") -> Color.parseColor("#EF6C00")
+        else -> Color.parseColor("#757575")
+    }
+
+    /** Kazı noktası türünün insan okur etiketi. */
+    private fun digTypeLabel(type: String): String = when (type) {
+        GoldLocation.DigPoint.CONFLUENCE -> "KAVŞAK"
+        GoldLocation.DigPoint.INSIDE_BEND -> "İÇ KIYI"
+        else -> "HEDEF"
+    }
+
+    /** Seçilen altın noktası için zengin bilgi diyaloğunu gösterir. */
     private fun showLocationInfoDialog(loc: GoldLocation) {
         val view = layoutInflater.inflate(R.layout.dialog_location_info, null)
-
-        val tvTitle = view.findViewById<TextView>(R.id.dialog_title)
-        val tvConf = view.findViewById<TextView>(R.id.dialog_confidence)
+        val imgHeader = view.findViewById<ImageView>(R.id.imgHeader)
+        val badgeRank = view.findViewById<TextView>(R.id.badgeRank)
+        val badgeConf = view.findViewById<TextView>(R.id.badgeConf)
+        val nameView = view.findViewById<TextView>(R.id.dialog_name)
+        val catView = view.findViewById<TextView>(R.id.dialog_category)
+        val chipElev = view.findViewById<TextView>(R.id.chipElevation)
+        val chipStream = view.findViewById<TextView>(R.id.chipStream)
+        val chipSand = view.findViewById<TextView>(R.id.chipSand)
+        val chipClay = view.findViewById<TextView>(R.id.chipClay)
+        val chipPrecip = view.findViewById<TextView>(R.id.chipPrecip)
+        val chipAfyon = view.findViewById<TextView>(R.id.chipAfyon)
         val tvCoords = view.findViewById<TextView>(R.id.dialog_coords)
-        val tvElev = view.findViewById<TextView>(R.id.dialog_elevation)
-        val tvTerrain = view.findViewById<TextView>(R.id.dialog_terrain)
-        val tvDist = view.findViewById<TextView>(R.id.dialog_distance)
+        val badgePanning = view.findViewById<TextView>(R.id.badgePanning)
+        val tvPanningWhy = view.findViewById<TextView>(R.id.dialog_panning_why)
         val tvSource = view.findViewById<TextView>(R.id.dialog_source)
         val tvLith = view.findViewById<TextView>(R.id.dialog_lithology)
         val tvInd = view.findViewById<TextView>(R.id.dialog_indicators)
         val tvReason = view.findViewById<TextView>(R.id.dialog_reasoning)
+        val tvFieldTips = view.findViewById<TextView>(R.id.dialog_field_tips)
+        val digContainer = view.findViewById<LinearLayout>(R.id.digPointContainer)
+        val tvDigNone = view.findViewById<TextView>(R.id.dialog_dig_none)
+        val tvSuccess = view.findViewById<TextView>(R.id.dialog_success_checks)
+        val tvEvidence = view.findViewById<TextView>(R.id.dialog_evidence)
+        val tvAccess = view.findViewById<TextView>(R.id.dialog_access)
+        val tvWeather = view.findViewById<TextView>(R.id.dialog_weather)
         val tvDesc = view.findViewById<TextView>(R.id.dialog_description)
         val btnOpen = view.findViewById<Button>(R.id.dialog_btn_open_maps)
         val btnCenter = view.findViewById<Button>(R.id.dialog_btn_center)
         val btnClose = view.findViewById<Button>(R.id.dialog_btn_close)
 
-        tvTitle.text = loc.name
+        // Diyalog erken olusturulur: kazı noktalarindaki "GOSTER" butonu buna erisir.
+        val dialog = AlertDialog.Builder(this)
+            .setView(view)
+            .setCancelable(true)
+            .create()
 
-        // Kanıt güveni rozeti
-        tvConf.text = buildString {
-            if (loc.rank > 0) append("#").append(loc.rank).append("  ")
-            append(loc.confidence.ifBlank { loc.category })
-        }
-        tvConf.setBackgroundColor(
-            when {
-                loc.confidence.contains("ÇOK") -> android.graphics.Color.parseColor("#B71C1C")
-                loc.confidence.contains("YÜKSEK") -> android.graphics.Color.parseColor("#E65100")
-                loc.confidence.contains("ORTA") -> android.graphics.Color.parseColor("#F9A825")
-                else -> android.graphics.Color.parseColor("#757575")
+        // --- Başlık görseli ---
+        nameView.text = loc.name
+        catView.text = buildString {
+            if (loc.category.isNotBlank()) append(loc.category)
+            if (loc.sourceDeposit.isNotBlank()) {
+                if (isNotEmpty()) append("  ·  ")
+                append(loc.sourceDeposit)
             }
-        )
-
-        tvCoords.text = buildString {
-            append(getString(R.string.label_coords))
-            append(": ")
-            append(String.format("%.5f", loc.lat))
-            append(", ")
-            append(String.format("%.5f", loc.lon))
         }
-        tvElev.text = getString(R.string.label_elevation) + ": " + loc.elevationM + " m (yaklaşık)"
-        tvTerrain.text = getString(R.string.label_terrain) + ": " + loc.terrain
-        tvDist.text = getString(R.string.label_distance) + ": " + loc.distanceKm + " km"
+        badgeRank.text = if (loc.rank > 0) "#${loc.rank}" else "•"
+        badgeConf.text = loc.confidence.ifBlank { "REFERANS" }
+        badgeConf.setBackgroundColor(confidenceColor(badgeConf.text.toString()))
 
-        tvSource.text = if (loc.sourceDeposit.isBlank()) "" else "Bilinir cevher: " + loc.sourceDeposit
+        loadHeaderThumb(loc, imgHeader)
+
+        // --- Bilgi çipleri ---
+        chipElev.text = "Rakım: ${loc.elevationM} m"
+        if (loc.streamRegime.isNotBlank() || loc.streamName.isNotBlank()) {
+            chipStream.text = buildString {
+                append("Akarsu: ")
+                append(loc.streamName.ifBlank { if (loc.streamRegime.isBlank()) "—" else "" })
+                if (loc.streamRegime.isNotBlank()) {
+                    append(if (length > 8) " · " else "")
+                    append(loc.streamRegime)
+                }
+            }.trimEnd(':', ' ')
+        } else {
+            chipStream.visibility = View.GONE
+        }
+        if (loc.sandPct >= 0) chipSand.text = "Kum %${loc.sandPct.toInt()}" else chipSand.visibility = View.GONE
+        if (loc.clayPct >= 0) chipClay.text = "Kil %${loc.clayPct.toInt()}" else chipClay.visibility = View.GONE
+        if (loc.annualPrecipMm >= 0) {
+            chipPrecip.text = "Yağış ${loc.annualPrecipMm} mm/yıl"
+        } else chipPrecip.visibility = View.GONE
+        chipAfyon.text = "Afyon: ${loc.distanceKm} km"
+
+        tvCoords.text = String.format("%.5f, %.5f", loc.lat, loc.lon)
+
+        // --- Savak uygunluğu ---
+        if (loc.panningGrade.isNotBlank()) {
+            badgePanning.text = loc.panningGrade
+            badgePanning.setBackgroundColor(panningColor(loc.panningGrade))
+            tvPanningWhy.text = loc.panningWhy
+        } else {
+            badgePanning.visibility = View.GONE
+        }
+
+        // --- Geoloji ---
+        tvSource.text = if (loc.sourceDeposit.isBlank()) "" else "Bilinen cevher: " + loc.sourceDeposit
         tvSource.visibility = if (loc.sourceDeposit.isBlank()) View.GONE else View.VISIBLE
         tvLith.text = if (loc.lithology.isBlank()) "" else "Litoloji: " + loc.lithology
         tvLith.visibility = if (loc.lithology.isBlank()) View.GONE else View.VISIBLE
         tvInd.text = if (loc.indicators.isBlank()) "" else "Aranacak göstergeler: " + loc.indicators
         tvInd.visibility = if (loc.indicators.isBlank()) View.GONE else View.VISIBLE
-        tvReason.text = if (loc.reasoning.isBlank()) "" else "Jeolojik değerlendirme: " + loc.reasoning
+        tvReason.text = loc.reasoning
         tvReason.visibility = if (loc.reasoning.isBlank()) View.GONE else View.VISIBLE
-        tvDesc.text = loc.description
 
-        val dialog = AlertDialog.Builder(this)
-            .setView(view)
-            .setCancelable(true)
-            .create()
+        // --- Kazı noktaları + saha ipuçları ---
+        tvFieldTips.text = loc.fieldTips
+        tvFieldTips.visibility = if (loc.fieldTips.isBlank()) View.GONE else View.VISIBLE
+        if (loc.digPoints.isEmpty()) {
+            tvDigNone.visibility = View.VISIBLE
+        } else {
+            tvDigNone.visibility = View.GONE
+            for (dp in loc.digPoints) {
+                val row = layoutInflater.inflate(R.layout.view_dig_point, digContainer, false)
+                val title = row.findViewById<TextView>(R.id.digTitle)
+                val why = row.findViewById<TextView>(R.id.digWhy)
+                val show = row.findViewById<TextView>(R.id.btnShow)
+                title.text = buildString {
+                    append("• ")
+                    append(digTypeLabel(dp.type))
+                    if (dp.distM > 0) append("  (≈${dp.distM} m)")
+                    if (dp.title.isNotBlank()) append("  ${dp.title}")
+                }
+                why.text = dp.why
+                show.setOnClickListener {
+                    mapHelper.showDigPointMarker(dp)
+                    dialog.dismiss()
+                }
+                digContainer.addView(row)
+            }
+        }
+
+        // --- Kontroller / kanıt / ulaşım ---
+        tvSuccess.text = loc.successChecks
+        tvSuccess.visibility = if (loc.successChecks.isBlank()) View.GONE else View.VISIBLE
+        tvEvidence.text = loc.evidence
+        tvEvidence.visibility = if (loc.evidence.isBlank()) View.GONE else View.VISIBLE
+        tvAccess.text = loc.access
+        tvAccess.visibility = if (loc.access.isBlank()) View.GONE else View.VISIBLE
+
+        // --- Hava durumu (yalnız internet varsa) ---
+        tvWeather.text = getString(R.string.panel_weather_loading)
+        WeatherFetcher.fetch(loc.lat, loc.lon) { text ->
+            runOnUiThread {
+                tvWeather.text = text ?: getString(R.string.panel_weather_offline)
+            }
+        }
+
+        // --- Açıklama ---
+        tvDesc.text = buildString {
+            if (loc.terrain.isNotBlank()) {
+                append("Arazi: ")
+                append(loc.terrain)
+                append("\n")
+            }
+            append(loc.description)
+        }
 
         btnOpen.setOnClickListener {
             openInGoogleMaps(loc.lat, loc.lon)
@@ -380,7 +594,10 @@ class MainActivity : AppCompatActivity() {
         }
         btnCenter.setOnClickListener {
             mapView.controller.animateTo(GeoPoint(loc.lat, loc.lon))
-            mapView.controller.setZoom(14.0)
+            // UYDU/CANLI'da z17 derin karo bolgesine in; TOPO'da 15 yeterli
+            val targetZoom = if (TileSourceProvider.currentStyle(this) ==
+                TileSourceProvider.STYLE_TOPO) 15.0 else 17.0
+            mapView.controller.setZoom(targetZoom)
             dialog.dismiss()
         }
         btnClose.setOnClickListener { dialog.dismiss() }
@@ -388,37 +605,46 @@ class MainActivity : AppCompatActivity() {
         dialog.show()
     }
 
+    /** assets'taki uydu küçük resmini arka planda dekoder edip ImageView'a koyar. */
+    private fun loadHeaderThumb(loc: GoldLocation, imgHeader: ImageView) {
+        if (loc.thumb.isBlank()) return
+        Thread {
+            try {
+                assets.open(loc.thumb).use { input ->
+                    val bmp = android.graphics.BitmapFactory.decodeStream(input)
+                    if (bmp != null) {
+                        imgHeader.post {
+                            imgHeader.setImageBitmap(bmp)
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                android.util.Log.w("MainActivity", "thumbnail: ${e.message}")
+            }
+        }.start()
+    }
+
     /** Kısıtlı/yasaklı bir alan için bilgi diyaloğunu gösterir. */
     private fun showRestrictedInfoDialog(area: RestrictedArea) {
-        val view = layoutInflater.inflate(R.layout.dialog_location_info, null)
+        val view = layoutInflater.inflate(R.layout.dialog_restricted_info, null)
 
-        val tvTitle = view.findViewById<TextView>(R.id.dialog_title)
-        val tvConf = view.findViewById<TextView>(R.id.dialog_confidence)
-        val tvCoords = view.findViewById<TextView>(R.id.dialog_coords)
-        val tvElev = view.findViewById<TextView>(R.id.dialog_elevation)
-        val tvTerrain = view.findViewById<TextView>(R.id.dialog_terrain)
-        val tvDist = view.findViewById<TextView>(R.id.dialog_distance)
-        val tvSource = view.findViewById<TextView>(R.id.dialog_source)
-        val tvLith = view.findViewById<TextView>(R.id.dialog_lithology)
-        val tvInd = view.findViewById<TextView>(R.id.dialog_indicators)
-        val tvReason = view.findViewById<TextView>(R.id.dialog_reasoning)
-        val tvDesc = view.findViewById<TextView>(R.id.dialog_description)
-        val btnOpen = view.findViewById<Button>(R.id.dialog_btn_open_maps)
-        val btnCenter = view.findViewById<Button>(R.id.dialog_btn_center)
-        val btnClose = view.findViewById<Button>(R.id.dialog_btn_close)
+        val tvTitle = view.findViewById<TextView>(R.id.ral_dialog_title)
+        val tvStatus = view.findViewById<TextView>(R.id.ral_status)
+        val tvCoords = view.findViewById<TextView>(R.id.ral_coords)
+        val tvRadius = view.findViewById<TextView>(R.id.ral_radius)
+        val tvNote = view.findViewById<TextView>(R.id.ral_note)
+        val tvDesc = view.findViewById<TextView>(R.id.ral_desc)
+        val btnOpen = view.findViewById<Button>(R.id.ral_btn_open_maps)
+        val btnCenter = view.findViewById<Button>(R.id.ral_btn_center)
+        val btnClose = view.findViewById<Button>(R.id.ral_btn_close)
 
         tvTitle.text = area.name
-        tvConf.visibility = View.GONE
-        tvSource.visibility = View.GONE
-        tvLith.visibility = View.GONE
-        tvInd.visibility = View.GONE
-        tvReason.visibility = View.GONE
+        tvStatus.text = "Statü: " + area.type
         tvCoords.text = "Merkez: " +
             String.format("%.5f", area.lat) + ", " + String.format("%.5f", area.lon)
-        tvElev.text = "Yarıçap: " + String.format("%.1f", area.radiusM / 1000.0) +
+        tvRadius.text = "Yarıçap: " + String.format("%.1f", area.radiusM / 1000.0) +
             " km (yaklaşık sınır)"
-        tvTerrain.text = "Statü: " + area.type
-        tvDist.text = "Bu alanda maden arama/üretim faaliyeti kısıtlı olabilir."
+        tvNote.text = "Bu alanda maden arama/üretim faaliyeti kısıtlı olabilir."
         tvDesc.text = area.description
 
         val dialog = AlertDialog.Builder(this)

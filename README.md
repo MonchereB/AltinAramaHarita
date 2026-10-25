@@ -16,9 +16,12 @@ zeminler ve yasal olarak kısıtlı bölgeler işaretlenmiş harita uygulaması.
 2. Dosyaya tıklayın → "Bilinen kaynaklardan yükleme" iznini verin
 3. Kurun ✅
 
-> **Not:** İlk kurulumdan sonra, uygulama içindeki **Güncelle** butonu ile
+> **Not:** İlk kurulumdan sonra, uygulama içindeki **Güncelleme** menüsü ile
 > yeni sürümleri uygulama **telefonunuzdan** doğrudan alabilirsiniz.
 > Uygulama açılışta GitHub'ı kontrol eder, yeni sürüm varsa sizi uyarır.
+
+> 📦 **Boyut:** Harita paketleri (topo + uydu) APK içinde gömülüdür; APK
+> **~140-165 MB** civarındadır ve telefonda ~2 katı yer kaplar.
 
 ---
 
@@ -26,13 +29,17 @@ zeminler ve yasal olarak kısıtlı bölgeler işaretlenmiş harita uygulaması.
 
 | Özellik | Açıklama |
 |---|---|
-| **Tam çevrimdışı harita** | 3000+ OpenTopoMap karosu uygulamanın içine gömülü — **internetsiz** çalışır |
-| **Net karo çizimi** | Karolar 1:1 pikselde çizilir (DPI büyütme kapalı) + z16/z17 detay karoları → dere ve mendereler net görünür |
+| **Tam çevrimdışı çift harita** | 3000+ OpenTopoMap topografik karosu **+** 5000+ Google uydu karosu gömülü — **internetsiz** çalışır; sol alttaki TOPO \| UYDU \| CANLI çipleriyle anında geçiş, kamera konumu korunur. UYDU paketi pin ve kazı noktaları çevresinde **z20'ye kadar** (~0.15 m/piksel) |
+| **CANLI uydu akışı** | İnternet varken tüm harita **canlı Google uydu** katmanından akar (z21'e kadar); osmdroid SQL cache'i gezilen alanları saklar → sonraki çevrimdışı ziyarette hâlâ görülür |
+| **Net karo çizimi** | Karolar 1:1 pikselde çizilir (DPI büyütme kapalı) + z16/z17 detay karoları → dere ve mendereler her iki katmanda net görünür |
 | **Spesifik noktalar** | Her pin bir **köy merkezine değil**, kriterlerin karşılandığı **akarsu yatağındaki tam noktaya** sabitlenmiştir; o noktanın rakımı, akarsu adı ve segment uzunluğu yazılıdır |
+| **Zengin pin paneli** | Başlıkta o noktanın **uydu görüntüsü**; rakım, akarsu, kum/kil yüzdesi (SoilGrids), yıllık yağış (Open-Meteo arşivi), Afyon mesafesi bilgi çipleri |
+| **Savak uygunluğu + kazı noktaları** | Her pin için mühendis değerlendirmesi ve akarsu geometrisinden hesaplanmış **kavşak / iç kıyı kazı hedefleri** — GÖSTER ile haritaya konur |
+| **Arazide Altın Rehberi** | Menüde: nerede birikir, ne zaman aranır, savak tekniği, altın-pirit ayrımı, siyah kum kuralı |
 | **Jeolojik gerekçe** | Her pin: sıralama, kanıt gücü, bilinen cevher, litoloji, arazide aranacak göstergeler ve maden mühendisi değerlendirmesi |
 | **Yasaklı alanlar** | Milli park / jeotermal alan sınırları haritada görünür (yalnızca merkez işaretine tıklayınca detay açılır) |
 | **Google Haritalar rotası** | Bir noktaya tıklayıp doğrudan rota oluşturun |
-| **⋮ Menü** | Sağ üstteki üç çizgi menüsü: Sürüm Güncelleme, Yasal Uyarı, Çevrimdışı Harita Bilgisi — en altında sürüm numarası |
+| **⋮ Menü** | Sağ üstteki üç çizgi menüsü: Sürüm Güncelleme, Arazide Altın Rehberi, Yasal Uyarı, Çevrimdışı Harita Bilgisi — en altında sürüm numarası |
 | **Otomatik güncelleme** | GitHub Releases üzerinden; yüzde göstergeli indirme, doğrulama, kurulum ve **kurulum sonrası otomatik yeniden başlatma** |
 | **GPS** | Konumunuzu merkeze alın, pusula ve ölçek çubuğu |
 
@@ -46,6 +53,10 @@ zeminler ve yasal olarak kısıtlı bölgeler işaretlenmiş harita uygulaması.
 | 12 | 29.35-31.65 E / 37.95-39.25 K | Afyonkarahisar il geneli (varsayılan görünüm) |
 | 13 | 30.00-31.45 E / 38.00-39.15 K | Çalışma alanı (~19 m/piksel) |
 | 14-15 | 30.40-30.68 E / 38.68-38.86 K | Şehir merkezi (metre hassasiyeti) |
+
+**UYDU katmanı (Google uydu):** z10-13 aynı bölge kapsamı + her 18 pin çevresinde
+z14-z17 detay blokları; artı **derin bloklar**: her pin çevresinde z18 5×5 / z19 5×5 /
+z20 3×3, her kazı noktası çevresinde z18-z20 3×3 → sahada maksimum çözünürlük ~0.15 m/piksel.
 
 ---
 
@@ -78,15 +89,25 @@ zeminler ve yasal olarak kısıtlı bölgeler işaretlenmiş harita uygulaması.
 </details>
 
 <details>
-<summary><b>Offline haritayı yeniden üretmek</b></summary>
+<summary><b>Offline haritayı / verileri yeniden üretmek</b></summary>
 
 ```bash
-py -3 tools/build_mbtiles.py          # eksik karoları indirir (resume)
+py -3 tools/build_mbtiles.py          # TOPO: eksik karoları indirir (resume)
 py -3 tools/build_mbtiles.py --fresh  # sıfırdan üretir
+
+py -3 tools/build_satellite.py        # UYDU: Google karoları (resume) + derin z18-20
+py -3 tools/build_satellite.py --fresh # kaynak değiştiyse sıfırdan döker
+py -3 tools/pin_enrich.py             # Overpass+SoilGrids+Open-Meteo zenginleştirme
+py -3 tools/make_thumbs.py             # pin başlık uydu küçük resimleri
+py -3 tools/apply_enrich.py           # tüm veriyi locations.json'a işler
 ```
 
-Harita **OpenTopoMap** kaynağından üretilir (topografik + atıf zorunlu).
+TOPO harita **OpenTopoMap** kaynağından üretilir (topografik + atıf zorunlu).
 `tile.openstreetmap.org` toplu indirmeyi engellediği için kullanılmaz.
+UYDU harita **Google uydu katmanı** (`mt*.google.com/vt/lyrs=s`) servisinden üretilir:
+Esri World Imagery kırsal kesimde z19'da verisini bitirdiği için Google tercih edildi —
+kırsal Afyon'da gerçek detay z18-z20'de (~0.15 m/piksel) mevcut (kişisel kullanım notu).
+CANLI katman aynı kaynağı **canlı akışta** kullanır (internet gerektirir; cache kalıcı).
 </details>
 
 <details>
@@ -134,6 +155,9 @@ yasal/cezai sorumluluğu kabul etmez.
 - **Kotlin** + **Android SDK 34** (minSdk 24)
 - **OSMDroid 6.1.1** — OpenStreetMap tabanlı harita motoru, MBTiles desteği
 - **OpenTopoMap** — topografik karo kaynağı (CC-BY-SA)
+- **Esri World Imagery → Google uydu katmanı** — uydu karoları; Esri kırsalda z19'da bitiyor,
+  Google z20'de ~0.15 m/piksel detay veriyor (CANLI akış da aynı kaynak)
+- **SoilGrids / Open-Meteo / Overpass API** — zenginleştirme verisi (toprak, iklim, akarsu ağı)
 - **GitHub Actions** — otomatik derleme ve sürüm yayını
 
 ---
@@ -205,4 +229,7 @@ sıralaması, kanıt gücü, bilinen cevher, litoloji, arazide aranacak gösterg
 ## 📄 Lisans
 
 Harita verileri: © OpenStreetMap katılımcıları, OpenTopoMap (CC-BY-SA)
+Uydu görüntüleri: Google uydu katmanı (`vt/lyrs=s`) — **kişisel / eğitim amaçlı kullanım**;
+ticari kullanımda resmi Google Maps API lisansı gerekir.
+CANLI katman internet ister; gezilen alanlar yerel SQL cache'te saklanır.
 Kod: Kişisel / eğitim amaçlı kullanım için serbest.

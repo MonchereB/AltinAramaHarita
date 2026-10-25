@@ -87,11 +87,16 @@ Uygulama **gerçek çevrimdışı harita** desteğine sahiptir. `assets/offline/
 dosyası varsa uygulama **tamamen internetsiz** çalışır.
 
 ### Mevcut Durum
-- `assets/offline/afyon.mbtiles` → projeye **dahil** (Afyonkarahisar + çevresi)
-- Uygulama açılışta bu dosyayı `filesDir/osmdroid_tiles/` klasörüne kopyalar
-- OSMDroid'in arşiv tarayıcısı bu klasörü otomatik tarar ve karoları yerel MBTiles'ten okur
-- Sol alt köşedeki etiket **"ÇEVRİMDIŞI HARİTA"** veya **"ÇEVRİMİÇİ HARİTA"** modunu gösterir
-- Dosya yoksa otomatik olarak çevrimiçi OpenStreetMap'e düşer
+- `assets/offline/afyon.mbtiles` → **TOPO** (OpenTopoMap) — projeye dahil
+- `assets/offline/afyon_sat.mbtiles` → **UYDU** (Google uydu katmanı, z20'ye kadar derin bloklar) — projeye dahil
+- **CANLI** stil arşiv yüklemez: Google uydu katmanından **canlı akış** yapar
+  (internet gerekir; osmdroid SQL cache'i gezilen karoları kaydeder)
+- Uygulama açılışta **seçili stile** ait dosyayı `filesDir/osmdroid_tiles/topo|sat`
+  klasörüne kopyalar; iki stilin karoları asla karışmaz
+- Sol alttaki **TOPO | UYDU | CANLI** çipleri stili değiştirir: geçişte kamera konumu
+  kaydedilir, etkinlik yeniden kurulur ve diğer arşiv dizini taranır
+- Etiket **"ÇEVRİMDIŞI HARİTA"** / **"ÇEVRİMDIŞI UYDU"** / **"CANLI UYDU (İnternet)"** veya **"ÇEVRİMİÇİ"** modu gösterir
+- Stile ait dosya yoksa otomatik olarak çevrimiçi MAPNIK'e düşer
 
 ### Kapsam (zoom planı)
 
@@ -118,14 +123,28 @@ Bu yüzden offline harita **OpenTopoMap** kaynağından üretilir:
 Uygulama canlı modda (çevrimiçi) OpenStreetMap'in standart karolarını kullanır,
 çevrimdışı modda ise gömülü OpenTopoMap MBTiles'ini.
 
+### UYDU için neden Google uydu katmanı?
+
+Uydu katmanında kırsal kesimde **yüksek çözünürlük** kritik. Test ettik:
+- **Esri World Imagery**: Afyon kırıntında z18'de net, **z19+ "Map data not yet available"** →
+  basta taşiya sekmeye gelmiyor
+- **Google uydu** (`mt*.google.com/vt/lyrs=s`): aynı noktada **z20'ye kadar gerçek detay**
+  (~0.15 m/piksel — tarla karcaları, tek tek çalılar, patika dokuları)
+- Betik `mt0..mt3` sunucularını rotasyonlu kullanır (kibar davranma: 6 iş parçacığı + 0.15 sn)
+- Not: bu endpoint resmi API değildir; **kişisel kullanım** içindir (README Lisans bölümü)
+- **CANLI** stil aynı kaynağı canlı akışta kullanır: internetsizde gri alan görünür,
+  gezilen yerler SQL cache'te kalır
+
 ### Kendi Bölgenizin Haritasını Üretmek
 Proje içinde hazır bir Python betiği var:
 
 ```bash
 py -3 tools\build_mbtiles.py
+py -3 tools\build_satellite.py        # uydu katmanı
 ```
 
-Betik, OpenTopoMap karolarını indirip MBTiles (SQLite) formatında birleştirir.
+Betik, OpenTopoMap (veya UYDU için Google uydu) karolarını indirip MBTiles (SQLite)
+formatında birleştirir.
 3 iş parçacığı ve istek başına 0.35 sn bekleme kullanır (sunucuya nazik kalmak için).
 Varsayılan bölge Afyonkarahisar'dır; değiştirmek için `tools/build_mbtiles.py`
 dosyasındaki `REGION`, `DISTRICT`, `MID`, `CITY`, `CITY_CORE` sözlüklerini düzenleyin.
@@ -198,9 +217,16 @@ adb logcat | findstr OsmDroid
 | Öğe | İşlev |
 |---|---|
 | **Sürüm Güncelleme** | GitHub'ı kontrol eder. Sürüm güncelse *"Sürümünüz güncel"* der; değilse *"Güncelle"* seçeneği çıkar |
+| **Arazide Altın Rehberi** | Nerede birikir, ne zaman aranır, savak tekniği, altın-pirit ayrımı, siyah kum kuralı |
 | **Yasal Uyarı** | 3213 sayılı Maden Kanunu uyarısı |
 | **Çevrimdışı Harita Bilgisi** | Harita kapsamı ve zoom dağılımı |
-| *(en altta)* | **Sürüm v1.1.0 • build 110** |
+| *(en altta)* | **Sürüm vX.Y.Z • build XÝZ** (kurulu sürüme göre dinamik) |
+
+### TOPO | UYDU | CANLI stili (sol alt çipler)
+Harita stilini değiştirir: **TOPO** = OpenTopoMap topografik, **UYDU** = Google uydu
+paket (pin+kazı çevresinde z20'ye kadar derin blok), **CANLI** = internetli canlı
+Google uydu akışı (z21'e kadar; gezilen karolar SQL cache'te kalıcı). Geçişte kamera
+konumu (merkez+zum) korunur; uygulama harita motorunu yeni arşiv diziniyle yeniden kurar.
 
 ### Harita netliği
 Uygulama **256px karoları 1:1 çizer** (`setTilesScaledToDpi(false)`).
@@ -248,7 +274,8 @@ adb logcat | findstr "altinarama"
 ### Depo
 👉 **https://github.com/MonchereB/AltinAramaHarita**
 
-Kaynak kod depoda; **81 MB'lık offline harita ve imzalama anahtarı depoya girmez**
+Kaynak kod depoda; **85 MB TOPO + 53 MB UYDU offline haritalar ve imzalama
+anahtarı depoya girmez**
 (`.gitignore` ile dışlandı). CI bunları kendisi hazırlar.
 
 ### Yeni sürüm yayınlama

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Kısıtlı/yasaklı alanlar için basit bilgi diyaloğu (pin panelinden ayrı) -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:maxHeight="480dp"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/ral_dialog_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_marginBottom="6dp"/>
+
+        <TextView
+            android:id="@+id/ral_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"
+            android:background="#2E7D32"
+            android:textStyle="bold"
+            android:textSize="13sp"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="4dp"
+            android:layout_marginBottom="10dp"/>
+
+        <TextView
+            android:id="@+id/ral_coords"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@color/text_primary"
+            android:layout_marginBottom="3dp"/>
+
+        <TextView
+            android:id="@+id/ral_radius"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@color/text_primary"
+            android:layout_marginBottom="3dp"/>
+
+        <TextView
+            android:id="@+id/ral_note"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="#B71C1C"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/ral_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:textColor="@color/text_secondary"
+            android:layout_marginBottom="12dp"/>
+
+        <Button
+            android:id="@+id/ral_btn_open_maps"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/dialog_open_maps"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="@color/colorAccent"
+            android:layout_marginBottom="8dp"/>
+
+        <Button
+            android:id="@+id/ral_btn_center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/dialog_center_map"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="@color/colorPrimary"
+            android:layout_marginBottom="8dp"/>
+
+        <Button
+            android:id="@+id/ral_btn_close"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/dialog_close"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#9E9E9E"/>
+    </LinearLayout>
+</ScrollView>

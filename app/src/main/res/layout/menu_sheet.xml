@@ -75,6 +75,34 @@
             android:visibility="gone"/>
     </LinearLayout>
 
+    <!-- Arazide altin rehberi -->
+    <LinearLayout
+        android:id="@+id/menuGuide"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="?android:attr/selectableItemBackground"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="16dp">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@android:drawable/ic_menu_compass"
+            android:contentDescription="@string/menu_guide"
+            android:tint="#E65100"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="20dp"
+            android:text="@string/menu_guide"
+            android:textSize="16sp"
+            android:textColor="@color/text_primary"/>
+    </LinearLayout>
+
     <!-- Yasal uyari -->
     <LinearLayout
         android:id="@+id/menuLegal"

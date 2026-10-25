@@ -48,7 +48,32 @@ class MapHelper(private val context: Context, private val mapView: MapView) {
                     sourceDeposit = obj.optString(GoldLocation.KEY_SOURCE, ""),
                     lithology = obj.optString(GoldLocation.KEY_LITHOLOGY, ""),
                     indicators = obj.optString(GoldLocation.KEY_INDICATORS, ""),
-                    reasoning = obj.optString(GoldLocation.KEY_REASONING, "")
+                    reasoning = obj.optString(GoldLocation.KEY_REASONING, ""),
+                    thumb = obj.optString(GoldLocation.KEY_THUMB, ""),
+                    panningGrade = obj.optString(GoldLocation.KEY_PANNING_GRADE, ""),
+                    panningWhy = obj.optString(GoldLocation.KEY_PANNING_WHY, ""),
+                    fieldTips = obj.optString(GoldLocation.KEY_FIELD_TIPS, ""),
+                    successChecks = obj.optString(GoldLocation.KEY_SUCCESS_CHECKS, ""),
+                    evidence = obj.optString(GoldLocation.KEY_EVIDENCE, ""),
+                    access = obj.optString(GoldLocation.KEY_ACCESS, ""),
+                    sandPct = obj.optJSONObject(GoldLocation.KEY_SOIL).let {
+                        if (it == null) -1.0 else it.optDouble("sand", -1.0)
+                    },
+                    clayPct = obj.optJSONObject(GoldLocation.KEY_SOIL).let {
+                        if (it == null) -1.0 else it.optDouble("clay", -1.0)
+                    },
+                    siltPct = obj.optJSONObject(GoldLocation.KEY_SOIL).let {
+                        if (it == null) -1.0 else it.optDouble("silt", -1.0)
+                    },
+                    annualPrecipMm = obj.optJSONObject(GoldLocation.KEY_CLIMATE).let {
+                        if (it == null) -1 else it.optInt("annual_precip_mm", -1)
+                    },
+                    springSharePct = obj.optJSONObject(GoldLocation.KEY_CLIMATE).let {
+                        if (it == null) -1.0 else it.optDouble("spring_share_pct", -1.0)
+                    },
+                    streamRegime = obj.optString(GoldLocation.KEY_STREAM_REGIME, ""),
+                    streamName = obj.optString(GoldLocation.KEY_STREAM_NAME, ""),
+                    digPoints = parseDigPoints(obj.optJSONArray(GoldLocation.KEY_DIG_POINTS))
                 )
                 locations.add(loc)
                 addGoldMarker(loc, onLocationClick)
@@ -57,6 +82,26 @@ class MapHelper(private val context: Context, private val mapView: MapView) {
             e.printStackTrace()
         }
         return locations
+    }
+
+    /** locations.json'daki dig_points listesini açar. */
+    private fun parseDigPoints(arr: JSONArray?): List<GoldLocation.DigPoint> {
+        if (arr == null) return emptyList()
+        val out = mutableListOf<GoldLocation.DigPoint>()
+        for (i in 0 until arr.length()) {
+            val o = arr.optJSONObject(i) ?: continue
+            out.add(
+                GoldLocation.DigPoint(
+                    lat = o.optDouble("lat", 0.0),
+                    lon = o.optDouble("lon", 0.0),
+                    type = o.optString("type", "IC_KIYI"),
+                    title = o.optString("title", ""),
+                    why = o.optString("why", ""),
+                    distM = o.optInt("dist", 0)
+                )
+            )
+        }
+        return out
     }
 
     /** Kısıtlı alanları assets/restricted_areas.json'dan yükleyip haritaya çizer. */
@@ -145,6 +190,33 @@ class MapHelper(private val context: Context, private val mapView: MapView) {
         polygon.setOnClickListener { _, _, _ -> true }
         mapView.overlayManager.add(polygon)
     }
+
+    /** Geçici kazı/hedef işareti koyar (diyalogdaki "GÖSTER" butonu için). */
+    fun showDigPointMarker(dp: GoldLocation.DigPoint) {
+        val marker = Marker(mapView)
+        marker.position = GeoPoint(dp.lat, dp.lon)
+        marker.title = dp.title
+        marker.snippet = dp.why
+        marker.setIcon(ContextCompat.getDrawable(context, R.drawable.ic_dig_point))
+        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+        // Aynı noktada eski geçici işaret varsa temizle
+        _digMarkers.forEach { mapView.overlayManager.remove(it) }
+        _digMarkers.clear()
+        _digMarkers.add(marker)
+        mapView.overlayManager.add(marker)
+        marker.showInfoWindow()
+        mapView.controller.animateTo(GeoPoint(dp.lat, dp.lon))
+        // UYDU/CANLI stilinde kazii noktalari z18-20 derin bloklardadir -> z19'a inmeli;
+        // TOPO paketi z17'de bittigi icin orada z17 yeterli.
+        val targetZoom = when (TileSourceProvider.currentStyle(context)) {
+            TileSourceProvider.STYLE_TOPO -> 17.0
+            else -> 19.0
+        }
+        mapView.controller.setZoom(targetZoom)
+        mapView.invalidate()
+    }
+
+    private val _digMarkers = mutableListOf<Marker>()
 
     /** Afyonkarahisar merkezine odaklanır. */
     fun centerOnAfyon() {

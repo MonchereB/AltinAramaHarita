@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Konumum ikonu (my_location): capraz isaret + halka + merkez nokta -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24"
+    android:tint="#FFFFFF">
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M11,0h2v4h-2z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M11,20h2v4h-2z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M0,11h4v2h-4z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M20,11h4v2h-4z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillType="evenOdd"
+        android:pathData="M19,12c0,3.87,-3.13,7,-7,7c-3.87,0,-7,-3.13,-7,-7c0,-3.87,3.13,-7,7,-7c3.87,0,7,3.13,7,7z M12,17c-2.76,0,-5,-2.24,-5,-5c0,-2.76,2.24,-5,5,-5c2.76,0,5,2.24,5,5c0,2.76,-2.24,5,-5,5z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M14.94,12c0,1.62,-1.31,2.94,-2.94,2.94S9.06,13.62,9.06,12S10.37,9.06,12,9.06S14.94,10.37,14.94,12z" />
+</vector>

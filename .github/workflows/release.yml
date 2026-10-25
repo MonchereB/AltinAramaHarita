@@ -54,7 +54,7 @@ jobs:
       - name: Gradle ile build et
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Offline haritayı hazırla
+      - name: Offline haritayı hazırla (TOPO + UYDU)
         shell: bash
         env:
           # gh release download icin gerekli
@@ -62,30 +62,35 @@ jobs:
         run: |
           set -e
           mkdir -p app/src/main/assets/offline
-          FOUND=0
-          # 1) EN SON surumdeki haritayi kullan (her surumde guncel harita bir sonrakine aktarilir)
-          echo "En son surumden deneniyor..."
-          gh release download --pattern "afyon.mbtiles" \
-            --dir app/src/main/assets/offline || true
-          [ -f app/src/main/assets/offline/afyon.mbtiles ] && FOUND=1
-          # 2) Yoksa onceki etiketten dene
-          if [ "$FOUND" -eq 0 ]; then
-            PREV=$(git tag --sort=-v:refname | grep -v "^${GITHUB_REF_NAME}$" | head -1 || true)
-            if [ -n "$PREV" ]; then
-              echo "Onceki surumden deneniyor: $PREV"
-              gh release download "$PREV" --pattern "afyon.mbtiles" \
-                --dir app/src/main/assets/offline || true
-              [ -f app/src/main/assets/offline/afyon.mbtiles ] && FOUND=1
+
+          prepare() {
+            local pattern="$1" localfile="$2" builder="$3"
+            echo "=== $localfile ==="
+            # 1) EN SON surumdeki haritayi kullan (her surumde guncel harita bir sonrakine aktarilir)
+            gh release download --pattern "$pattern" \
+              --dir app/src/main/assets/offline || true
+            # 2) Yoksa onceki etiketten dene
+            if [ ! -f "app/src/main/assets/offline/$localfile" ]; then
+              PREV=$(git tag --sort=-v:refname | grep -v "^${GITHUB_REF_NAME}$" | head -1 || true)
+              if [ -n "$PREV" ]; then
+                echo "Onceki surumden deneniyor: $PREV"
+                gh release download "$PREV" --pattern "$pattern" \
+                  --dir app/src/main/assets/offline || true
+              fi
             fi
-          fi
-          # 3) Hicbiri yoksa sifirdan uret
-          if [ "$FOUND" -eq 0 ]; then
-            echo "Harita sifirdan uretiliyor (10-30 dakika surebilir)..."
-            python tools/build_mbtiles.py
-          else
-            echo "Harita hazir."
-          fi
-          ls -lh app/src/main/assets/offline/afyon.mbtiles
+            # 3) Hicbiri yoksa sifirdan uret
+            if [ ! -f "app/src/main/assets/offline/$localfile" ]; then
+              echo "Harita sifirdan uretiliyor: $builder (10-40 dakika surebilir)..."
+              python "$builder"
+            else
+              echo "Harita hazir."
+            fi
+          }
+
+          prepare "afyon.mbtiles" "afyon.mbtiles" "tools/build_mbtiles.py"
+          prepare "afyon_sat.mbtiles" "afyon_sat.mbtiles" "tools/build_satellite.py"
+
+          ls -lh app/src/main/assets/offline/
 
       - name: Sürüm bilgisini hesapla
         shell: bash
@@ -146,13 +151,21 @@ jobs:
 
             Otomatik derleme. Bu APK, GitHub Actions tarafından üretilmiştir.
 
-            **Kurulum:** Bu sayfadaki `AltinAramaHarita.apk` dosyasını indirip telefonda açın.
-            İlk kurulumdan sonra, uygulama içindeki **Güncelle** butonu ile yeni sürümleri
+            **Kurulum:** Bu sayfadaki `AltinAramaHarita-<sürüm>.apk` dosyasını indirip telefonda açın.
+            İlk kurulumdan sonra, uygulama içindeki **Sürüm Güncelleme** menüsü ile yeni sürümleri
             otomatik olarak alabilirsiniz.
 
+            **Yenilikler:** UYDU görüntüsü katmanı + **CANLI canlı uydu akışı**,
+            derin zoom blokları (pin ve kazı noktaları çevresinde z20'ye kadar ~0.15 m/piksel),
+            zenginleştirilmiş pin paneli (savak uygunluğu, kazı noktaları, ulaşım, hava durumu),
+            Arazide Altın Rehberi.
+
+            `afyon.mbtiles` = topografik harita, `afyon_sat.mbtiles` = uydu görüntüsü paketi (derin bloklarlı).
+
             ---
-            Harita verileri: © OpenStreetMap katılımcıları, OpenTopoMap (CC-BY-SA)
+            Harita: © OpenStreetMap katılımcıları, OpenTopoMap (CC-BY-SA) · Uydu: Google uydu katmanı (kişisel kullanım)
           files: |
             AltinAramaHarita-*.apk
             app/src/main/assets/offline/afyon.mbtiles
+            app/src/main/assets/offline/afyon_sat.mbtiles
           fail_on_unmatched_files: false

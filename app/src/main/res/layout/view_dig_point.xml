@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Pin panelindeki tek bir kazı noktası satırı (dinamik eklenir) -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#FAF7EF"
+    android:padding="10dp"
+    android:layout_marginBottom="6dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/digTitle"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="13sp"
+            android:textColor="#4E342E"/>
+
+        <TextView
+            android:id="@+id/btnShow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/panel_dig_show"
+            android:textStyle="bold"
+            android:textSize="12sp"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/bg_btn_show"
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="5dp"
+            android:clickable="true"
+            android:focusable="true"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/digWhy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:textColor="@color/text_secondary"
+        android:layout_marginTop="2dp"/>
+
+</LinearLayout>

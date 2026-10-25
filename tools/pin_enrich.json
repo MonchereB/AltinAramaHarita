@@ -1,0 +1,400 @@
+{
+ "1": {
+  "id": 1,
+  "lat": 38.89735,
+  "lon": 30.74657,
+  "n_waterways": 6,
+  "confluences": [
+   {
+    "lat": 38.88347,
+    "lon": 30.73914,
+    "dist": 1672,
+    "names": [
+     "-",
+     "Böcekçi Deresi",
+     "İscehisar Deresi"
+    ],
+    "n": 3
+   }
+  ],
+  "bends": [],
+  "road": {
+   "type": "köy yolu",
+   "osm": "tertiary",
+   "name": "Olukpınar - Karaağaç yolu",
+   "dist": 515
+  },
+  "village": {
+   "name": "Karaağaç",
+   "type": "village",
+   "dist": 1539
+  },
+  "afyon_km": 23.8,
+  "soil_error": "HTTP Error 404: Not Found",
+  "climate": {
+   "annual_precip_mm": 407,
+   "spring_share_pct": 23.9,
+   "winter_share_pct": 31.9,
+   "years": "2019-2023 (5 yıl)"
+  }
+ },
+ "2": {
+  "id": 2,
+  "lat": 39.00151,
+  "lon": 30.80537,
+  "n_waterways": 0,
+  "confluences": [],
+  "bends": [],
+  "road": {
+   "type": "köy yolu",
+   "osm": "tertiary",
+   "name": "",
+   "dist": 16
+  },
+  "village": {
+   "name": "Doğlat",
+   "type": "village",
+   "dist": 0
+  },
+  "afyon_km": 35.7,
+  "soil_error": "HTTP Error 404: Not Found",
+  "climate": {
+   "annual_precip_mm": 508,
+   "spring_share_pct": 26.1,
+   "winter_share_pct": 26.9,
+   "years": "2019-2023 (5 yıl)"
+  }
+ },
+ "3": {
+  "id": 3,
+  "lat": 38.8989,
+  "lon": 30.51267,
+  "n_waterways": 0,
+  "confluences": [],
+  "bends": [],
+  "road": null,
+  "village": null,
+  "access_error": "'NoneType' object is not subscriptable",
+  "afyon_km": 16.0,
+  "soil_error": "HTTP Error 404: Not Found",
+  "climate": {
+   "annual_precip_mm": 404,
+   "spring_share_pct": 23.5,
+   "winter_share_pct": 32.2,
+   "years": "2019-2023 (5 yıl)"
+  }
+ },
+ "4": {
+  "id": 4,
+  "lat": 39.07724,
+  "lon": 30.66532,
+  "n_waterways": 3,
+  "confluences": [
+   {
+    "lat": 39.09096,
+    "lon": 30.66012,
+    "dist": 1591,
+    "names": [
+     "-"
+    ],
+    "n": 2
+   },
+   {
+    "lat": 39.06308,
+    "lon": 30.67278,
+    "dist": 1701,
+    "names": [
+     "-"
+    ],
+    "n": 2
+   }
+  ],
+  "bends": [
+   {
+    "lat": 39.06682,
+    "lon": 30.66991,
+    "dist": 1221,
+    "turn": 66,
+    "names": [
+     "-"
+    ]
+   }
+  ],
+  "road": {
+   "type": "toprak/stabilize yol",
+   "osm": "track",
+   "name": "",
+   "dist": 113
+  },
+  "village": {
+   "name": "Akhisar",
+   "type": "village",
+   "dist": 3604
+  },
+  "afyon_km": 37.3,
+  "soil_error": "HTTP Error 404: Not Found",
+  "climate": {
+   "annual_precip_mm": 541,
+   "spring_share_pct": 23.8,
+   "winter_share_pct": 26.0,
+   "years": "2019-2023 (5 yıl)"
+  }
+ },
+ "5": {
+  "id": 5,
+  "lat": 38.47475,
+  "lon": 30.27089,
+  "n_waterways": 3,
+  "confluences": [
+   {
+    "lat": 38.46817,
+    "lon": 30.25619,
+    "dist": 1474,
+    "names": [
+     "-"
+    ],
+    "n": 2
+   }
+  ],
+  "bends": [],
+  "road": {
+   "type": "köy yolu",
+   "osm": "residential",
+   "name": "",
+   "dist": 10
+  },
+  "village": {
+   "name": "Sandıklı",
+   "type": "town",
+   "dist": 1120
+  },
+  "afyon_km": 39.1,
+  "soil_error": "HTTP Error 404: Not Found",
+  "climate": {
+   "annual_precip_mm": 498,
+   "spring_share_pct": 22.1,
+   "winter_share_pct": 32.3,
+   "years": "2019-2023 (5 yıl)"
+  }
+ },
+ "6": {
+  "id": 6,
+  "lat": 38.50388,
+  "lon": 30.15338,
+  "n_waterways": 5,
+  "confluences": [],
+  "bends": [],
+  "road": {
+   "type": "toprak/stabilize yol",
+   "osm": "track",
+   "name": "",
+   "dist": 1032
+  },
+  "village": {
+   "name": "Dodurga",
+   "type": "village",
+   "dist": 1471
+  },
+  "afyon_km": 43.7,
+  "soil_error": "HTTP Error 404: Not Found",
+  "climate": {
+   "annual_precip_mm": 414,
+   "spring_share_pct": 20.8,
+   "winter_share_pct": 37.3,
+   "years": "2019-2023 (5 yıl)"
+  }
+ },
+ "7": {
+  "id": 7,
+  "lat": 38.66566,
+  "lon": 30.95027,
+  "n_waterways": 0,
+  "confluences": [],
+  "bends": [],
+  "road": null,
+  "village": null,
+  "access_error": "'NoneType' object is not subscriptable",
+  "afyon_km": 37.1,
+  "soil_error": "HTTP Error 404: Not Found",
+  "climate": {
+   "annual_precip_mm": 412,
+   "spring_share_pct": 23.3,
+   "winter_share_pct": 34.5,
+   "years": "2019-2023 (5 yıl)"
+  }
+ },
+ "8": {
+  "id": 8,
+  "lat": 38.46904,
+  "lon": 30.54532,
+  "n_waterways": 4,
+  "confluences": [],
+  "bends": [],
+  "road": {
+   "type": "toprak/stabilize yol",
+   "osm": "track",
+   "name": "",
+   "dist": 147
+  },
+  "village": {
+   "name": "Güneytepe",
+   "type": "village",
+   "dist": 755
+  },
+  "afyon_km": 32.0,
+  "soil_error": "HTTP Error 404: Not Found",
+  "climate": {
+   "annual_precip_mm": 514,
+   "spring_share_pct": 22.7,
+   "winter_share_pct": 32.9,
+   "years": "2019-2023 (5 yıl)"
+  }
+ },
+ "9": {
+  "id": 9,
+  "lat": 38.85139,
+  "lon": 30.39711,
+  "n_waterways": 0,
+  "confluences": [],
+  "bends": [],
+  "road": null,
+  "village": null,
+  "access_error": "'NoneType' object is not subscriptable",
+  "afyon_km": 16.2,
+  "soil_error": "HTTP Error 404: Not Found",
+  "climate": {
+   "annual_precip_mm": 448,
+   "spring_share_pct": 22.8,
+   "winter_share_pct": 33.4,
+   "years": "2019-2023 (5 yıl)"
+  }
+ },
+ "10": {
+  "id": 10,
+  "lat": 39.08862,
+  "lon": 30.86214,
+  "n_waterways": 5,
+  "confluences": [
+   {
+    "lat": 39.08738,
+    "lon": 30.86733,
+    "dist": 469,
+    "names": [
+     "-"
+    ],
+    "n": 3
+   },
+   {
+    "lat": 39.09135,
+    "lon": 30.8487,
+    "dist": 1199,
+    "names": [
+     "-"
+    ],
+    "n": 2
+   }
+  ],
+  "bends": [],
+  "road": {
+   "type": "toprak/stabilize yol",
+   "osm": "track",
+   "name": "Han - Çukurkuyu yolu",
+   "dist": 459
+  },
+  "village": {
+   "name": "Çukurkuyu",
+   "type": "village",
+   "dist": 2448
+  },
+  "afyon_km": 46.3,
+  "soil_error": "HTTP Error 404: Not Found",
+  "climate": {
+   "annual_precip_mm": 520,
+   "spring_share_pct": 23.5,
+   "winter_share_pct": 26.7,
+   "years": "2019-2023 (5 yıl)"
+  }
+ },
+ "11": {
+  "id": 11,
+  "lat": 38.45026,
+  "lon": 30.22596,
+  "n_waterways": 12,
+  "confluences": [
+   {
+    "lat": 38.44104,
+    "lon": 30.21734,
+    "dist": 1271,
+    "names": [
+     "-"
+    ],
+    "n": 2
+   },
+   {
+    "lat": 38.44393,
+    "lon": 30.209,
+    "dist": 1636,
+    "names": [
+     "-"
+    ],
+    "n": 2
+   },
+   {
+    "lat": 38.44587,
+    "lon": 30.20477,
+    "dist": 1909,
+    "names": [
+     "-"
+    ],
+    "n": 3
+   }
+  ],
+  "bends": [],
+  "road": {
+   "type": "toprak/stabilize yol",
+   "osm": "track",
+   "name": "",
+   "dist": 117
+  },
+  "village": {
+   "name": "Koçhisar",
+   "type": "village",
+   "dist": 2743
+  },
+  "afyon_km": 43.6,
+  "soil_error": "HTTP Error 404: Not Found",
+  "climate": {
+   "annual_precip_mm": 414,
+   "spring_share_pct": 20.8,
+   "winter_share_pct": 37.3,
+   "years": "2019-2023 (5 yıl)"
+  }
+ },
+ "12": {
+  "id": 12,
+  "lat": 38.37062,
+  "lon": 30.16001,
+  "n_waterways": 0,
+  "confluences": [],
+  "bends": [],
+  "road": {
+   "type": "köy yolu",
+   "osm": "tertiary",
+   "name": "Kaplıca Caddesi",
+   "dist": 6
+  },
+  "village": {
+   "name": "Örenkaya",
+   "type": "village",
+   "dist": 0
+  },
+  "afyon_km": 54.1,
+  "soil_error": "HTTP Error 404: Not Found",
+  "climate": {
+   "annual_precip_mm": 441,
+   "spring_share_pct": 20.0,
+   "winter_share_pct": 37.8,
+   "years": "2019-2023 (5 yıl)"
+  }
+ }
+}

@@ -1,149 +1,448 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ZENGINLESTIRILMIS PIN PANELI v2
+  Baslikta uydu goruntusu + rozetler; bilgi cipleri; savak uygunlugu;
+  kazı noktaları (haritada göster); ağır=testler; kanıt; ulaşım; hava durumu.
+-->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:maxHeight="560dp"
-    android:fillViewport="true">
+    android:maxHeight="640dp"
+    android:fillViewport="true"
+    android:scrollbars="none">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/dialog_title"
+        <!-- =================== BASLIK GORSELİ =================== -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
+
+            <ImageView
+                android:id="@+id/imgHeader"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/label_terrain"
+                android:background="#263238"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_header_scrim"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="start|top"
+                android:layout_margin="10dp">
+
+                <TextView
+                    android:id="@+id/badgeRank"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#4E342E"
+                    android:background="#FFC107"
+                    android:textStyle="bold"
+                    android:textSize="13sp"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="4dp"/>
+
+                <Space android:layout_width="8dp" android:layout_height="1dp"/>
+
+                <TextView
+                    android:id="@+id/badgeConf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#FFFFFF"
+                    android:background="#B71C1C"
+                    android:textStyle="bold"
+                    android:textSize="13sp"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="4dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="bottom|start"
+                android:paddingHorizontal="14dp"
+                android:paddingBottom="10dp">
+
+                <TextView
+                    android:id="@+id/dialog_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold"
+                    android:textSize="19sp"
+                    android:shadowColor="#80000000"
+                    android:shadowDx="1"
+                    android:shadowDy="2"
+                    android:shadowRadius="3"/>
+
+                <TextView
+                    android:id="@+id/dialog_category"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#E3F2FD"
+                    android:textSize="12sp"
+                    android:shadowColor="#80000000"
+                    android:shadowDx="1"
+                    android:shadowDy="1"
+                    android:shadowRadius="2"/>
+            </LinearLayout>
+        </FrameLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:textColor="@color/colorPrimaryDark"
-            android:layout_marginBottom="4dp"/>
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="16dp">
 
-        <!-- Guven rozeti -->
-        <TextView
-            android:id="@+id/dialog_confidence"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            android:background="#B8860B"
-            android:textColor="#FFFFFF"
-            android:paddingHorizontal="8dp"
-            android:paddingVertical="3dp"
-            android:layout_marginBottom="10dp"/>
+            <!-- =================== BILGI CIPLERI =================== -->
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                android:layout_marginBottom="10dp">
 
-        <TextView
-            android:id="@+id/dialog_coords"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:textColor="@color/text_primary"
-            android:layout_marginBottom="3dp"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/dialog_elevation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:textColor="@color/text_primary"
-            android:layout_marginBottom="3dp"/>
+                    <TextView
+                        android:id="@+id/chipElevation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_chip"
+                        android:textSize="12sp"
+                        android:textColor="#5D4037"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="5dp"/>
 
-        <TextView
-            android:id="@+id/dialog_terrain"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:textColor="@color/text_primary"
-            android:layout_marginBottom="3dp"/>
+                    <Space android:layout_width="6dp" android:layout_height="1dp"/>
 
-        <TextView
-            android:id="@+id/dialog_distance"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:textColor="@color/text_primary"
-            android:layout_marginBottom="8dp"/>
+                    <TextView
+                        android:id="@+id/chipStream"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_chip"
+                        android:textSize="12sp"
+                        android:textColor="#5D4037"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="5dp"/>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#CCCCCC"
-            android:layout_marginVertical="6dp"/>
+                    <Space android:layout_width="6dp" android:layout_height="1dp"/>
 
-        <!-- Jeolojik bilgi bloklari -->
-        <TextView
-            android:id="@+id/dialog_source"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="13sp"
-            android:textColor="@color/text_primary"
-            android:textStyle="bold"
-            android:layout_marginBottom="4dp"/>
+                    <TextView
+                        android:id="@+id/chipSand"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_chip"
+                        android:textSize="12sp"
+                        android:textColor="#5D4037"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="5dp"/>
 
-        <TextView
-            android:id="@+id/dialog_lithology"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="13sp"
-            android:textColor="@color/text_primary"
-            android:layout_marginBottom="4dp"/>
+                    <Space android:layout_width="6dp" android:layout_height="1dp"/>
 
-        <TextView
-            android:id="@+id/dialog_indicators"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="13sp"
-            android:textColor="@color/text_primary"
-            android:layout_marginBottom="4dp"/>
+                    <TextView
+                        android:id="@+id/chipClay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_chip"
+                        android:textSize="12sp"
+                        android:textColor="#5D4037"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="5dp"/>
 
-        <TextView
-            android:id="@+id/dialog_reasoning"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="13sp"
-            android:textColor="@color/text_secondary"
-            android:layout_marginBottom="8dp"/>
+                    <Space android:layout_width="6dp" android:layout_height="1dp"/>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#CCCCCC"
-            android:layout_marginVertical="6dp"/>
+                    <TextView
+                        android:id="@+id/chipPrecip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_chip"
+                        android:textSize="12sp"
+                        android:textColor="#5D4037"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="5dp"/>
 
-        <TextView
-            android:id="@+id/dialog_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="13sp"
-            android:textColor="@color/text_secondary"
-            android:layout_marginBottom="12dp"/>
+                    <Space android:layout_width="6dp" android:layout_height="1dp"/>
 
-        <Button
-            android:id="@+id/dialog_btn_open_maps"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/dialog_open_maps"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="@color/colorAccent"
-            android:layout_marginBottom="8dp"/>
+                    <TextView
+                        android:id="@+id/chipAfyon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_chip"
+                        android:textSize="12sp"
+                        android:textColor="#5D4037"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="5dp"/>
+                </LinearLayout>
+            </HorizontalScrollView>
 
-        <Button
-            android:id="@+id/dialog_btn_center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/dialog_center_map"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="@color/colorPrimary"
-            android:layout_marginBottom="8dp"/>
+            <TextView
+                android:id="@+id/dialog_coords"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textColor="@color/text_secondary"
+                android:gravity="center"
+                android:layout_marginBottom="10dp"/>
 
-        <Button
-            android:id="@+id/dialog_btn_close"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/dialog_close"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#9E9E9E"/>
+            <!-- =================== SAVAK UYGUNLUĞU =================== -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="4dp">
 
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="@string/panel_what_rating"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:textColor="@color/colorPrimaryDark"/>
+
+                <TextView
+                    android:id="@+id/badgePanning"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="3dp"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/dialog_panning_why"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:textColor="@color/text_primary"
+                android:layout_marginBottom="10dp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#E0E0E0"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- =================== GEOLOJIK DEĞERLENDIRME =================== -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/label_geology_assessment"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_marginBottom="4dp"/>
+
+            <TextView
+                android:id="@+id/dialog_source"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:textColor="@color/text_primary"
+                android:textStyle="bold"
+                android:layout_marginBottom="3dp"/>
+
+            <TextView
+                android:id="@+id/dialog_lithology"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:textColor="@color/text_primary"
+                android:layout_marginBottom="3dp"/>
+
+            <TextView
+                android:id="@+id/dialog_indicators"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:textColor="@color/text_primary"
+                android:layout_marginBottom="3dp"/>
+
+            <TextView
+                android:id="@+id/dialog_reasoning"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:textColor="@color/text_secondary"
+                android:layout_marginBottom="8dp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#E0E0E0"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- =================== KAZI NOKTALARI =================== -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/panel_field_tips"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_marginBottom="4dp"/>
+
+            <TextView
+                android:id="@+id/dialog_field_tips"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:textColor="@color/text_primary"
+                android:layout_marginBottom="6dp"/>
+
+            <LinearLayout
+                android:id="@+id/digPointContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="6dp"/>
+
+            <TextView
+                android:id="@+id/dialog_dig_none"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/panel_dig_none"
+                android:textSize="12sp"
+                android:textColor="@color/text_secondary"
+                android:visibility="gone"
+                android:layout_marginBottom="6dp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#E0E0E0"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- =================== BULDUĞUNU ANLAMA =================== -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/panel_success_checks"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_marginBottom="4dp"/>
+
+            <TextView
+                android:id="@+id/dialog_success_checks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:textColor="@color/text_primary"
+                android:layout_marginBottom="8dp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#E0E0E0"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- =================== KANIT + ERISIM + HAVA =================== -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/panel_evidence"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_marginBottom="4dp"/>
+
+            <TextView
+                android:id="@+id/dialog_evidence"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:textColor="@color/text_primary"
+                android:layout_marginBottom="8dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/panel_access"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_marginBottom="4dp"/>
+
+            <TextView
+                android:id="@+id/dialog_access"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:textColor="@color/text_primary"
+                android:layout_marginBottom="8dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/panel_weather"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_marginBottom="4dp"/>
+
+            <TextView
+                android:id="@+id/dialog_weather"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/panel_weather_loading"
+                android:textSize="13sp"
+                android:textColor="@color/text_primary"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- =================== ACIKLAMA + BUTONLAR =================== -->
+            <TextView
+                android:id="@+id/dialog_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textColor="@color/text_secondary"
+                android:layout_marginBottom="12dp"/>
+
+            <Button
+                android:id="@+id/dialog_btn_open_maps"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/dialog_open_maps"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="@color/colorAccent"
+                android:layout_marginBottom="8dp"/>
+
+            <Button
+                android:id="@+id/dialog_btn_center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/dialog_center_map"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="@color/colorPrimary"
+                android:layout_marginBottom="8dp"/>
+
+            <Button
+                android:id="@+id/dialog_btn_close"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/dialog_close"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#9E9E9E"/>
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

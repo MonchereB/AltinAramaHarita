@@ -55,5 +55,37 @@
     <string name="update_download_invalid">İndirilen dosya geçerli bir APK değil</string>
     <string name="update_restarting">Güncelleme tamamlandı, uygulama yeniden başlatılıyor…</string>
     <string name="offline_info_title">Çevrimdışı Harita</string>
-    <string name="offline_info_msg">Bu uygulama Afyonkarahisar ve çevresinin OpenTopoMap topografik haritasını cihazınıza gömülü olarak taşır.\n\n• Bölge (zoom 10-11)\n• İl geneli (zoom 12)\n• Çalışma alanı (zoom 13)\n• Şehir merkezi (zoom 14-15)\n\nKapsanan alanların dışına uzaklaştırırsanız harita boş görünür.\n\nHarita verileri: © OpenStreetMap katılımcıları, OpenTopoMap (CC-BY-SA)</string>
+    <string name="offline_info_msg">Bu uygulama Afyonkarahisar ve çevresinin haritalarını cihazınıza gömülü olarak taşır.\n\n• TOPO: OpenTopoMap topografik karolar (z10-13 bölge, pinler z14-17)\n• UYDU: Google uydu karoları — bölge z10-13, pin ve kazı noktaları çevresinde z20\'ye kadar (≈0.15 m/piksel) DERIN bloklar\n• CANLI: İnternet varken tüm harita canlı Google uydu akar (z21\'e kadar); gezdığınız alanlar cihazda saklanır, sonra çevrimdışı da açılır\n\nKapsanan alanların dışına uzaklaştırırsanız harita boş görünür.\n\nHarita verileri: © OpenStreetMap katılımcıları, OpenTopoMap (CC-BY-SA) · Uydu: Google uydu görüntüleri (kişisel kullanım)</string>
+
+    <!-- Harita stili (TOPO / UYDU / CANLI) -->
+    <string name="style_topo">TOPO</string>
+    <string name="style_sat">UYDU</string>
+    <string name="style_live">CANLI</string>
+    <string name="style_topo_desc">OpenTopoMap topografik</string>
+    <string name="style_sat_desc">Uydu paketi (z20\'ye kadar)</string>
+    <string name="style_live_desc">CANLI uydu akışı (internet gerektirir)</string>
+
+    <!-- Zenginleştirilmiş pin paneli -->
+    <string name="panel_what_rating">Savak Uygunluğu</string>
+    <string name="label_geology_assessment">Jeolojik Değerlendirme</string>
+    <string name="panel_field_tips">Arazide Tam Olarak Nereye Kazmalısın</string>
+    <string name="panel_success_checks">Altını Bulup Bulmadığınızı Nasıl Anlarsınız</string>
+    <string name="panel_evidence">Altın Buluntu Kanıtı</string>
+    <string name="panel_access">Ulaşım</string>
+    <string name="panel_weather">Hava Durumu (İnternet Varsa)</string>
+    <string name="panel_weather_offline">İnternet yok — hava durumu gösterilemiyor</string>
+    <string name="panel_weather_loading">Hava durumu yükleniyor…</string>
+    <string name="panel_weather_error">Hava durumu alınamadı</string>
+    <string name="panel_dig_show">GÖSTER</string>
+    <string name="panel_dig_none">Bu lokasyon için otomatik kazı noktası hesaplanamadı — akarsu ağacında uygun kavşak/iç kıyı yok. Yine de panning rehberindeki genel kuralları takip edin.</string>
+    <string name="panel_chip_elevation">Rakım</string>
+    <string name="panel_chip_sand">Kum</string>
+    <string name="panel_chip_clay">Kil</string>
+    <string name="panel_chip_precip">Yağış</string>
+    <string name="panel_chip_afyon">Afyon</string>
+
+    <!-- Arazide Altın Rehberi -->
+    <string name="menu_guide">Arazide Altın Rehberi</string>
+    <string name="guide_title">Arazide Altın Rehberi</string>
+    <string name="guide_text">1) ALTIN NEREDE BİRİKİR?\nAltın aşırı ağırdır: su hızlı aktıkça taşınır, hız DÜŞTÜĞÜ noktada dipe iner. Dere içinde daima şu yerlere bakın:\n• Kavşaklar — küçük dere büyük dereye katıldığında akış yavaşlar; altın hemen kavşağın MANSABINDA dipteki çatlaklara iner. Kavşağın yukarısı değil, aşağısı çalışılır.\n• Menderes iç kıyıları — virajda su dış kıyıya çarpar; iç kıyı sakin kalır ve altın iç kıyının önündeki çakıl yatağında birikir.\n• Ana kaya çatlakları ve çukurları — dipteki kayanın yarıkları altını yakalar; çatlak yüzeyi temizlenip içerisi de kazılmalıdır.\n• İri kayaların mansabındaki sakin kısım — koca blok, suyu arkaya doğru yavaşlatır; altın bloğun hemen arkasında ve iki yanında birikir.\n• Çakıl adacıkları — çakıl tepelerinin mansap ucu en verimli noktadır.\n\n2) NE ZAMAN ARANIR?\nEn verimli dönem yaz sonu ve sonbahardır: su seviyesi en düşükken çakıl tabanının büyük kısmı görünür ve çalışmak kolaydır. İlkbahar taşkınları kavşakları yeniden doldurur; taşkın sonrası yeni çakıl bırakan noktalar özellikle umut vericidir.\n\n3) SAVAK TEKNİĞİ\n• Çakılı savak yarıya kadar doldurun; suda önce iri taşları tek tek ele.\n• Killi toprakta örneklemeyi bol suyla yapın: çamurlu savak altını gizler.\n• Savak öne-geriye hafifçe itilir; su kenardan sürekli taşmalıdır — ağır malzeme tabana çöker, hafif kum süzülüp gider.\n• Tabanda koyu renkli ağır kum görünene kadar süzmeye devam edin.\n• Siyah kum geldiğinde yavaşlayın: altın bu tabanın üstünde ya da hemen altındadır. Mıknatısla siyah kumu toplayıp arasında altın tane arayın.\n\n4) BULDUĞUNUZ SARI TANE ALTIN MI?\n• Renk: Altın sıcak ve yumuşak sarıdır; gölgede de parıldar. Pirit (aptal altını) pirinç renginde, gölgede soluklaşır.\n• Mıknatıs testi: altın mıknatısa çekilmez; siyah kum çekilir.\n• Çekiç testi: iki çakıl arasına konan tane düzleşip yayılırsa ALTIN, toz olup parçalanırsa pirittir.\n\n5) EMİN OLAMAZSANIZ\n• Aynı noktada 3-4 savak örnek alıp sonuçları kıyaslayın; tek savak yanıltabilir.\n• En yararlı işaret SİYAH KUM TABANIDIR: siyah kum yoksa o çizgide yanlış yerde olabilirsiniz; mansaba doğru 50-100 m inip yeniden deneyin.\n\n6) YASAL\nDerelerde altın arama ve çıkarma 3213 sayılı Maden Kanunu kapsamında resmi ruhsata tabidir; bu rehber yalnızca bilgi ve eğitim amaçlıdır.</string>
 </resources>
